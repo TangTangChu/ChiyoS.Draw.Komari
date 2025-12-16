@@ -1,0 +1,335 @@
+## 忽略 Visual Studio 临时文件、生成结果等
+## 获取最新版本：https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
+
+# 用户特定文件
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# 用户特定文件 (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# 生成结果
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# Visual Studio 2015/2017 缓存/目录
+.vs/
+# Uncomment if you have tasks that create the project's static files in wwwroot
+#wwwroot/
+
+# Visual Studio 2017 自动生成文件
+Generated\ Files/
+
+# MSTest 测试结果
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUnit
+*.VisualState.xml
+TestResult.xml
+nunit-*.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# 基准结果
+BenchmarkDotNet.Artifacts/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# StyleCop
+StyleCopReport.xml
+
+# 由基于 MSBuild 的 Visual Studio 应用程序生成的文件
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# Visual Studio 探查器
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio 跟踪文件
+*.e2e
+
+# 脚本运行环境跟踪文件
+*.trace.json
+
+# TFS 2012 本地工作区
+$tf/
+
+# 指导方针数据库
+*.gpState
+
+# 扩展功能代码片段
+*.code-snippets
+
+# 本地设置（MonoDevelop）
+.localhistory/
+
+# Visual Studio 2017
+.vs/15/**
+
+# Visual Studio 代码工作区设置
+*.code-workspace
+
+# 本地 Visual Studio 应用程序实例
+.vscode/
+
+# 本地 History for Visual Studio Code
+.history/
+
+# Windows 安装程序文件
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# Windows 系统文件
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+
+# 文件夹配置文件
+[Dd]esktop.ini
+
+# 包文件
+*.7z
+*.dmg
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.zipx
+
+# 开发包存储
+.devpack/
+
+# 节点包管理器
+node_modules/
+
+# NuGet 包目录
+packages/
+## 注意：从 GitHub 或 NuGet 工具恢复包在这里是可接受的
+## 但是，如果您也可以包含对源代码管理进行版本控制的包，请取消注释
+#!packages/*.nupkg
+
+# 升级的 NuGet 包
+*.nupkg
+*.snupkg
+nuget.exe
+!**/packages/repositories.config
+
+# Chocolatey
+chocolatey/
+
+# 生成的 NuGet 包
+NuGetPackages/
+
+# NuGet 符号包
+*.symbols.nupkg
+
+# Cake
+tools/
+!tools/packages.config
+
+# 生成脚本
+*.cmd
+*.ps1
+
+# 苹果
+.DS_Store
+
+# 可执行文件
+*.exe
+*.dll
+*.pdb
+
+# Unity3D 生成的元文件
+*.meta
+
+# 日志文件
+*.log
+
+# 临时文件
+*.tmp
+*.temp
+
+# 资源文件
+*.resources
+
+# 编译后的资源文件
+*.resource
+
+# 强名称签名文件
+*.snk
+
+# 发布输出
+publish/
+
+# 项目特定文件（按需取消注释）
+# *.csproj.user
+# *.vbproj.user
+# *.fsproj.user
+# *.dbproj.user
+
+# SQL Server 文件
+*.mdf
+*.ldf
+
+# Azure 函数 (project)
+*.funcignore
+
+# Azure 应用服务文件
+*.scm.cmd
+
+# Visual Studio 中的本地存储
+appsettings.local.json
+
+# Rider
+.idea/
+*.sln.iml
+
+# CodeRush
+.cr/
+
+# Python 工具
+__pycache__/
+*.pyc
+
+# 临时文件夹
+[Tt]emp/
+[Tt]mp/
+
+# 项目引用文件
+*.shproj
+*.pri
+
+# 图标包
+*.iconset
+
+# Visual Studio 数据库项目
+*.dbmdl
+*.dbproj.schemaview
+*.sqlsuo
+
+# Visual Studio 安装程序项目
+*.vdproj
+
+# Visual Studio Lab
+*.vdd.core
+
+# SQL 操作
+*.bacpac
+
+# 生成输出中的 Microsoft Fakes
+FakesAssemblies/
+
+# 轻量级模型
+*.lightweightmodel
+
+# 业务规则目录
+BusinessRules/
+
+# 分析器缓存
+*.ap
+
+# 分析器日志
+*.alg
+
+# 模型存储
+ModelManifest.xml
+
+# ClickOnce
+*.application
+*.manifest
+*.deploy
+*.pubxml
+*.publishsettings
+
+# VS 分析器
+*.profxml
+*.profSettings
+
+# 代码分析器规则集
+*.ruleset
+
+# C++ 编译文件
+*.aps
+*.ncb
+*.ipch
+
+# Visual Studio 设置
+*.vssettings
+
+# Resharper
+_ReSharper.*/
+
+# 团队城市
+TeamCity*
+
+# DotCover
+*.dotCover
+
+# 数据文件
+*.mdb
+
+# 开源覆盖率报告
+.opencover
+
+# 慢速查询日志
+*-slow.log
+
+# 应用洞察
+ApplicationInsights.config
+
+# SQL Server 扩展
+*.sqlext
+
+# 工作项附件
+*.wi
+
+# 包引用
+packages.lock.json
+
+# 开发证书
+*.pfx
+*.p12
+
+# 本地化文件夹
+*/Localization/*.json
+!*/Localization/*.en.json
+
+# 项目模板
+*.vstemplate
+
+# 点击跟踪
+*.clicks
