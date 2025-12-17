@@ -10,7 +10,7 @@
            x:Name="MWindow"
         Title="ChiyoS.Draw.Komari" Height="640" Width="1126.5" Loaded="MWindow_Loaded" ResizeMode="CanMinimize" Closing="MWindow_Closing" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Icon="新建画布1.png">
     <hc:Window.Background>
-        <ImageBrush Stretch="UniformToFill" ImageSource="104646778_p0.png" />
+        <ImageBrush Stretch="UniformToFill" ImageSource="/103314904_p0_結束バンド.jpg" />
     </hc:Window.Background>
     <Grid>
         <TabControl x:Name="Tbcl" Background="{x:Null}">
@@ -28,7 +28,7 @@
                             </LinearGradientBrush>
                         </ProgressBar.Foreground>
                     </ProgressBar>
-                    <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontSize="24" TextAlignment="Center" Margin="0,0,0,-50" Foreground="White"/>
+                    <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontSize="24" TextAlignment="Center" Margin="0,0,0,-50" Foreground="Black"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
@@ -46,7 +46,7 @@
 
                         </StackPanel>
                     </hc:ScrollViewer>
-                    <TextBlock x:Name="Tbk_M_Info" Margin="0,292,0.4,278"  Text="提示" TextAlignment="Center" FontSize="26" Foreground="Black"/>
+                    <TextBlock x:Name="Tbk_M_Info" Margin="196,292,226,278"  Text="提示" TextAlignment="Center" FontSize="26" Foreground="Black"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
@@ -74,7 +74,7 @@
                         <ComboBoxItem Content="算法1" />
                         <ComboBoxItem Content="算法2" />
                     </ComboBox>
-                    <TextBlock x:Name="Tbk_pz_Info" Height="40" Text="学号表未加载成功呢" FontSize="33" Visibility="Hidden" TextAlignment="Center"  Margin="386,202,386,370" Foreground="#FFFB4587"/>
+                    <TextBlock x:Name="Tbk_pz_Info" Height="40" Text="学号表未加载成功哦" FontSize="33" Visibility="Hidden" TextAlignment="Center"  Margin="386,202,386,370" Foreground="#FFFB4587"/>
                     <Button x:Name="Btn_DrawS" Content="&#xE62F; 开始" Click="Btn_DrawS_Click"  Margin="386,488,584,74" Height="50" Width="150" Style="{StaticResource ButtonSuccess}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" />
                     <Button x:Name="Btn_BacktoM" Content="&#xe61c; 主界面" Click="Btn_BacktoM_Click"  Margin="584,488,386,74" Height="50" Width="150" Style="{StaticResource ButtonPrimary}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" />
                 </Grid>

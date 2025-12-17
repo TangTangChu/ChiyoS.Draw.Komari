@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Threading;
+using System.Linq;
 
 namespace ChiyoS.Draw.Komari
 {
@@ -19,7 +20,7 @@ namespace ChiyoS.Draw.Komari
         RandomF2 randomF2 = new RandomF2();
         
         Root root = new Root();
-
+        Root_wtl root_Wtl = new Root_wtl();
         System.Timers.Timer timer1 = new System.Timers.Timer();
         System.Timers.Timer timer_start = new System.Timers.Timer();
         System.Timers.Timer timer_xh = new System.Timers.Timer();
@@ -30,15 +31,18 @@ namespace ChiyoS.Draw.Komari
         int xhn2 = 0;
         int gt2 = 0;
         bool isCanxh = false;
+        bool isewtl = false;
 
         ArrayList al = new ArrayList();
-
         ArrayList Everyone = new ArrayList();
         ArrayList boys = new ArrayList();
+        ArrayList Everyone_f = new ArrayList();
+        ArrayList boys_f = new ArrayList();
         ArrayList girls = new ArrayList();
         ArrayList seletlist = new ArrayList();
-
-        CQAnimation cqa = new CQAnimation();
+        ArrayList wtlist = new ArrayList();
+        int[] tzya = new int[1];
+        int[] tzyb = new int[1];
         public MainWindow()
         {
             InitializeComponent();          
@@ -105,20 +109,18 @@ namespace ChiyoS.Draw.Komari
                     }
 
                     Console.WriteLine("---[自动模式] 生成的随机数---");
-                    Console.WriteLine(string.Join("\n", arr));
-                    
+                    Console.WriteLine(string.Join("  ", arr));
+                    Console.WriteLine("----");
                     try
                     {
-                        Task.Run(() =>
+                        int[] nst = arr;
+                        if (isewtl)
                         {
-                            this.Dispatcher.Invoke(new Action(() =>
-                            {
-                                cqa.Show();
-                                cqa.SetName(Getname(arr, Cbx_sf.SelectedIndex));
-                            }));
-                        });
+                            nst = STFilter(arr, Cbx_cqgt.SelectedIndex);
+                        }
+                        Console.WriteLine(string.Join("  ", nst));
                         
-                        AddCh(arr,Cbx_cqgt.SelectedIndex);
+                        AddCh(nst,Cbx_cqgt.SelectedIndex);
                         Tbk_M_Text.Text = "抽取完成";
                         Tbk_M_Info.Text = "[自动模式] 任务结束";
                         Btn_M_BacktoPG.IsEnabled = true;
@@ -127,7 +129,7 @@ namespace ChiyoS.Draw.Komari
                     }
                     catch (Exception ex)
                     {
-                        Tbk_M_Text.Text = "An error has occurred";
+                        Tbk_M_Text.Text = "ERROR!";
                         Tbk_M_Info.Text = "[自动模式] 错误！";
                         Growl.Error("[自动模式] 程序执行时遇到错误！");
                         HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
@@ -171,11 +173,11 @@ namespace ChiyoS.Draw.Komari
                         gt2 = 0;
                         if(Cbx_cqgt.SelectedIndex == 0)
                         {
-                            seletlist = Everyone;
+                            seletlist = Everyone_f;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 1)
                         {
-                            seletlist = boys;
+                            seletlist = boys_f;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 2)
                         {
@@ -318,8 +320,8 @@ namespace ChiyoS.Draw.Komari
                     {
                         if (i == s1)
                         {
-                            Growl.Warning("抽取TARGET有重复，已舍弃！\n请继续抽取！");
-                            Console.WriteLine("[TARGET {0} 号 重复][执行操作：舍弃]", s1);
+                            Growl.Warning("抽取TARGET有重复，操作无效！\n请继续抽取！");
+                            Console.WriteLine("[TARGET {0} 号 重复][执行操作：撤销]", s1);
                             Tbk_M_Info.Text = string.Format("[{0} 号 已重复] 程序已将此操作结果撤销，请继续！", s1);
                             return;
                         }
@@ -334,7 +336,7 @@ namespace ChiyoS.Draw.Komari
                 }
                 if (gt >= Nud_n1.Value)
                 {
-                    StopMualTask("[手动模式] 抽取完成!（如果上方有名字请忽略）", "抽取完成");
+                    StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
                 }
             }
             else if(Rbtn_R3.IsChecked == true)
@@ -347,9 +349,9 @@ namespace ChiyoS.Draw.Komari
                     {
                         if(czgt == sr)
                         {
-                            Growl.Warning("抽取TARGET有重复，已舍弃！\n请继续抽取！");
-                            Console.WriteLine("[TARGET {0}同学已在列表][执行操作：舍弃]", czgt);
-                            Tbk_M_Info.Text = string.Format("[TARGET{0}同学已在列表] 程序已将此操作结果撤销，请继续！", czgt);
+                            Growl.Warning("抽取TARGET有重复，操作无效！\n请继续抽取！");
+                            Console.WriteLine("[TARGET {0}  重复][执行操作：撤销操作]", czgt);
+                            Tbk_M_Info.Text = string.Format("[TARGET{0}号  已重复] 程序已将此操作结果撤销，请继续！", czgt);
                             return;
                         }
                     }
@@ -362,7 +364,7 @@ namespace ChiyoS.Draw.Komari
                 }
                 if(gt2>= Nud_n1.Value)
                 {
-                    StopMualTask("[手动模式] 抽取完成!（如果上方有名字请忽略）", "抽取完成");
+                    StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
                 }
             }
         }
@@ -554,6 +556,27 @@ namespace ChiyoS.Draw.Komari
                         HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
                         return;
                     }
+                    try
+                    {
+                        //wtl
+                        str = File.ReadAllText(@"D:\ChiyoS\config\wtlist.json");
+                        root_Wtl = JsonConvert.DeserializeObject<Root_wtl>(str);
+
+                        int[] st_tmp= new int[root_Wtl.student.Count];
+                        int i = 0;
+                        foreach(string n in root_Wtl.student)
+                        {
+                            st_tmp[i] = int.Parse(n);
+                            //Everyone.Remove(n);
+                            i++;
+                        }
+                        wtlist = Getname(st_tmp, 0);
+                        isewtl = true;
+                    }
+                    catch
+                    {
+
+                    }
                     Nud_n1.Maximum = root.students.Count;
                     Nud_endid.Maximum = root.students.Count;
                     try
@@ -574,14 +597,100 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
+                    try
+                    {
+                        Everyone_f = Everyone;
+                        boys_f = boys;
+                        if (wtlist.Count != 0)
+                        {
+                            foreach (string ns in wtlist)
+                            {
+                                Everyone_f.Remove(ns);
+                                Everyone_f.Remove("曾婉晴");
+                                boys_f.Remove(ns);
+                            }
+                            
+                            
+                        }
+                        
+                    }
+                    catch
+                    {
+
+                    }
                     //Growl.Success("少女祈祷成功！");
                     Growl.Info("当前载入 " + root.title);
-                    Title = "ChiyoS.Draw.Komari|当前载入配置文件 " + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.3.0.0_WBranch|当前载入配置文件 " + root.title;
                 }));
             }));
         }
-
-        private ArrayList Getname(int[] nm,int tid)
+        private int[] STFilter(int[] st,int md)
+        {
+            if (md == 3)
+            {
+                return st;
+            }
+            ArrayList sts = Getname(st, md);
+            for (int i = 0; i < st.Length; i++)
+            {
+                
+                //int[] l_tmp = new int[st[i]];
+                //string s1 = Getname(l_tmp, md)[0].ToString();
+                if (wtlist.Contains(sts[i].ToString()))
+                {
+                    if (md == 0)
+                    {
+                        while (true)
+                        {
+                            foreach (string ns in Everyone_f)
+                            {
+                                if (sts.Contains(ns))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(string.Format("Name {0} 将被替换成 Name {1}", sts[i], ns));
+                                    Console.WriteLine(string.Format("P-ns:{0} sts[i]:{1} st[i]:{2} eveid:{3}", ns, sts[i], st[i],Everyone.IndexOf(ns)));
+                                    sts[i] = ns;
+                                    st[i] = Everyone.IndexOf(ns)+3;
+                                    Console.WriteLine(string.Format("-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        
+                    }
+                    else if (md == 1)
+                    {
+                        while (true)
+                        {
+                            foreach (string ns in boys_f)
+                            {
+                                if (sts.Contains(ns))
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    Console.WriteLine(string.Format("Name {0} 将被替换成 Name{1}", sts[i], ns));
+                                    Console.WriteLine(string.Format("P-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
+                                    sts[i] = ns;
+                                    st[i] = boys.IndexOf(ns)+1;
+                                    Console.WriteLine(string.Format("-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                        
+                    }
+                }
+            }
+            return st;
+        }
+        private ArrayList Getname(int[] nm, int tid)
         {
             ArrayList names = new ArrayList();
             if (tid == 0)
@@ -596,7 +705,7 @@ namespace ChiyoS.Draw.Komari
             {
                 foreach (int id in nm)
                 {
-                    names.Add(boys[id-1].ToString());
+                    names.Add(boys[id - 1].ToString());
                 }
                 return names;
             }
@@ -612,7 +721,7 @@ namespace ChiyoS.Draw.Komari
 
 
         }
-        
+
 
         private void Btn_M_Restart_Click(object sender, RoutedEventArgs e)
         {
