@@ -20,7 +20,6 @@ namespace ChiyoS.Draw.Komari
         RandomF2 randomF2 = new RandomF2();
         
         Root root = new Root();
-        Root_wtl root_Wtl = new Root_wtl();
         System.Timers.Timer timer1 = new System.Timers.Timer();
         System.Timers.Timer timer_start = new System.Timers.Timer();
         System.Timers.Timer timer_xh = new System.Timers.Timer();
@@ -31,18 +30,12 @@ namespace ChiyoS.Draw.Komari
         int xhn2 = 0;
         int gt2 = 0;
         bool isCanxh = false;
-        bool isewtl = false;
 
         ArrayList al = new ArrayList();
         ArrayList Everyone = new ArrayList();
         ArrayList boys = new ArrayList();
-        ArrayList Everyone_f = new ArrayList();
-        ArrayList boys_f = new ArrayList();
         ArrayList girls = new ArrayList();
         ArrayList seletlist = new ArrayList();
-        ArrayList wtlist = new ArrayList();
-        int[] tzya = new int[1];
-        int[] tzyb = new int[1];
         public MainWindow()
         {
             InitializeComponent();          
@@ -113,14 +106,9 @@ namespace ChiyoS.Draw.Komari
                     Console.WriteLine("----");
                     try
                     {
-                        int[] nst = arr;
-                        if (isewtl)
-                        {
-                            nst = STFilter(arr, Cbx_cqgt.SelectedIndex);
-                        }
-                        Console.WriteLine(string.Join("  ", nst));
                         
-                        AddCh(nst,Cbx_cqgt.SelectedIndex);
+                        
+                        AddCh(arr,Cbx_cqgt.SelectedIndex);
                         Tbk_M_Text.Text = "抽取完成";
                         Tbk_M_Info.Text = "[自动模式] 任务结束";
                         Btn_M_BacktoPG.IsEnabled = true;
@@ -173,11 +161,11 @@ namespace ChiyoS.Draw.Komari
                         gt2 = 0;
                         if(Cbx_cqgt.SelectedIndex == 0)
                         {
-                            seletlist = Everyone_f;
+                            seletlist = Everyone;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 1)
                         {
-                            seletlist = boys_f;
+                            seletlist = boys;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 2)
                         {
@@ -351,12 +339,12 @@ namespace ChiyoS.Draw.Komari
                         {
                             Growl.Warning("抽取TARGET有重复，操作无效！\n请继续抽取！");
                             Console.WriteLine("[TARGET {0}  重复][执行操作：撤销操作]", czgt);
-                            Tbk_M_Info.Text = string.Format("[TARGET{0}号  已重复] 程序已将此操作结果撤销，请继续！", czgt);
+                            Tbk_M_Info.Text = string.Format("[TARGET{0}  已重复] 程序已将此操作结果撤销，请继续！", czgt);
                             return;
                         }
                     }
                     Console.WriteLine("[未重复]");
-                    Tbk_M_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt - 1);
+                    Tbk_M_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt2 - 1);
                     al.Add(czgt);
                     int[] ar = new int[] { Everyone.IndexOf(czgt)+1 };
                     AddCh(ar, 0);
@@ -556,27 +544,7 @@ namespace ChiyoS.Draw.Komari
                         HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
                         return;
                     }
-                    try
-                    {
-                        //wtl
-                        str = File.ReadAllText(@"D:\ChiyoS\config\wtlist.json");
-                        root_Wtl = JsonConvert.DeserializeObject<Root_wtl>(str);
-
-                        int[] st_tmp= new int[root_Wtl.student.Count];
-                        int i = 0;
-                        foreach(string n in root_Wtl.student)
-                        {
-                            st_tmp[i] = int.Parse(n);
-                            //Everyone.Remove(n);
-                            i++;
-                        }
-                        wtlist = Getname(st_tmp, 0);
-                        isewtl = true;
-                    }
-                    catch
-                    {
-
-                    }
+                    
                     Nud_n1.Maximum = root.students.Count;
                     Nud_endid.Maximum = root.students.Count;
                     try
@@ -597,99 +565,14 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
-                    try
-                    {
-                        Everyone_f = Everyone;
-                        boys_f = boys;
-                        if (wtlist.Count != 0)
-                        {
-                            foreach (string ns in wtlist)
-                            {
-                                Everyone_f.Remove(ns);
-                                Everyone_f.Remove("曾婉晴");
-                                boys_f.Remove(ns);
-                            }
-                            
-                            
-                        }
-                        
-                    }
-                    catch
-                    {
-
-                    }
+                    
                     //Growl.Success("少女祈祷成功！");
                     Growl.Info("当前载入 " + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.3.0.0_WBranch|当前载入配置文件 " + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.4.0.0_Standard|当前载入配置文件:" + root.title;
                 }));
             }));
         }
-        private int[] STFilter(int[] st,int md)
-        {
-            if (md == 3)
-            {
-                return st;
-            }
-            ArrayList sts = Getname(st, md);
-            for (int i = 0; i < st.Length; i++)
-            {
-                
-                //int[] l_tmp = new int[st[i]];
-                //string s1 = Getname(l_tmp, md)[0].ToString();
-                if (wtlist.Contains(sts[i].ToString()))
-                {
-                    if (md == 0)
-                    {
-                        while (true)
-                        {
-                            foreach (string ns in Everyone_f)
-                            {
-                                if (sts.Contains(ns))
-                                {
-                                    continue;
-                                }
-                                else
-                                {
-                                    Console.WriteLine(string.Format("Name {0} 将被替换成 Name {1}", sts[i], ns));
-                                    Console.WriteLine(string.Format("P-ns:{0} sts[i]:{1} st[i]:{2} eveid:{3}", ns, sts[i], st[i],Everyone.IndexOf(ns)));
-                                    sts[i] = ns;
-                                    st[i] = Everyone.IndexOf(ns)+3;
-                                    Console.WriteLine(string.Format("-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        
-                    }
-                    else if (md == 1)
-                    {
-                        while (true)
-                        {
-                            foreach (string ns in boys_f)
-                            {
-                                if (sts.Contains(ns))
-                                {
-                                    continue;
-                                }
-                                else
-                                {
-                                    Console.WriteLine(string.Format("Name {0} 将被替换成 Name{1}", sts[i], ns));
-                                    Console.WriteLine(string.Format("P-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
-                                    sts[i] = ns;
-                                    st[i] = boys.IndexOf(ns)+1;
-                                    Console.WriteLine(string.Format("-ns:{0} sts[i]:{1} st[i]:{2} ", ns, sts[i], st[i]));
-                                    break;
-                                }
-                            }
-                            break;
-                        }
-                        
-                    }
-                }
-            }
-            return st;
-        }
+        
         private ArrayList Getname(int[] nm, int tid)
         {
             ArrayList names = new ArrayList();

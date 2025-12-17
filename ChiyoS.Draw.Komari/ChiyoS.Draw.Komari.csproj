@@ -69,7 +69,6 @@
     <Compile Include="JsonClass.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Random2.cs" />
-    <Compile Include="Root_wtl.cs" />
     <Compile Include="UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -123,13 +122,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Resource Include="ZiXinFangShiYaTiXiTi1030-2.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="104646778_p0.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="favicon.ico" />
@@ -138,7 +133,7 @@
     <Resource Include="新建画布1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="103314904_p0_結束バンド.jpg" />
+    <Resource Include="104105335_p1_亚托莉 2022farewell.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

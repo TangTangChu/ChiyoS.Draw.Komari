@@ -10,37 +10,36 @@
            x:Name="MWindow"
         Title="ChiyoS.Draw.Komari" Height="640" Width="1126.5" Loaded="MWindow_Loaded" ResizeMode="CanMinimize" Closing="MWindow_Closing" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Icon="新建画布1.png">
     <hc:Window.Background>
-        <ImageBrush Stretch="UniformToFill" ImageSource="/103314904_p0_結束バンド.jpg" />
+        <ImageBrush Stretch="UniformToFill" ImageSource="/104105335_p1_亚托莉 2022farewell.jpg" />
     </hc:Window.Background>
     <Grid>
         <TabControl x:Name="Tbcl" Background="{x:Null}">
             <TabItem Visibility="Collapsed">
                 <Grid Height="612">
-                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontSize="100" Margin="0,61,0,117" Height="201" Foreground="Black"/>
-                    <Button x:Name="Btn_Enter" Click="Btn_Enter_Click" Content="进入"  Margin="491,353,479,100" Height="70" Visibility="Hidden" Width="240" Style="{StaticResource ButtonSuccess}" FontSize="30"/>
-                    <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True">
-                        <ProgressBar.Foreground>
-                            <LinearGradientBrush EndPoint="1,0" StartPoint="0,0">
-                                <GradientStop Color="{DynamicResource PrimaryColor}"/>
-                                <GradientStop Color="#FFF30C67" Offset="1"/>
-                                <GradientStop Color="#FFF60F0F" Offset="0.666"/>
-                                <GradientStop Color="#FFF0E915" Offset="0.342"/>
+                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontSize="100" Margin="0,221,0,269" Foreground="Black"/>
+                    <Button x:Name="Btn_Enter" Click="Btn_Enter_Click" Content="进入"  Margin="491,353,479,100" Height="70" Visibility="Hidden" Width="240" Style="{StaticResource ButtonSuccess}" FontSize="30">
+                        <Button.Background>
+                            <LinearGradientBrush EndPoint="1,0">
+                                <GradientStop Color="#FF2DB84D"/>
+                                <GradientStop Color="#FF52F778" Offset="1"/>
                             </LinearGradientBrush>
-                        </ProgressBar.Foreground>
-                    </ProgressBar>
-                    <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontSize="24" TextAlignment="Center" Margin="0,0,0,-50" Foreground="Black"/>
+                        </Button.Background>
+                    </Button>
+                    <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True" Margin="188,348,188,260" Foreground="#FFFD3792"/>
+                    <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontSize="24" TextAlignment="Center" Margin="388,357,388,220" Foreground="Black"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="844,579,0,0" TextWrapping="Wrap" Text="背景人物：&lt;ATRI&gt;アトリ" VerticalAlignment="Top" Height="33" Width="282" FontSize="26" Foreground="#FF6D6D6D"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
                 <Grid>
                     <Button x:Name="Btn_M_cq" Content="&#xe650; 抽取" Click="Btn_M_cq_Click" Visibility="Hidden"  Margin="473,353,497,209" Height="50" Width="150" Style="{StaticResource ButtonInfo}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" />
-                    <TextBlock x:Name="Tbk_M_Text" Text="これはテキストです " FontSize="100" TextAlignment="Center" Margin="0,160,0,320" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Foreground="Black"/>
+                    <TextBlock x:Name="Tbk_M_Text" Text="これはテキストです " FontSize="100" TextAlignment="Center" Margin="0,160,0,320" Foreground="Black"/>
                     <TextBlock x:Name="Tbk_M_Count" Text="" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="White" />
                     <Button x:Name="Btn_M_Cancle" Content="&#xe653; 取消" Click="Btn_Cancle_Click" Style="{DynamicResource ButtonDanger}" IsEnabled="False" Width="100" Margin="979,304,41,278" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"/>
                     <Button x:Name="Btn_M_BacktoPG" Content="&#xe6ff; 返回" Click="Btn_M_BacktoPG_Click" Style="{DynamicResource ButtonPrimary}" IsEnabled="False" Width="100" Margin="979,335,41,247" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"/>
                     <Button x:Name="Btn_M_Restart" Content="&#xe65b;  重新开始" Click="Btn_M_Restart_Click"  Style="{StaticResource ButtonInfo}" IsEnabled="False" Width="100" Margin="874,334,146,248" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"/>
-                    <Button x:Name="Btn_M_ScvLeft" Content="‹" Height="115" Width="40" Click="Btn_ScvLeft_Click" Margin="10,471,1070,26" Background="{x:Null}" FontSize="60" Foreground="Black"></Button>
-                    <Button x:Name="Btn_M_ScvRight" Content="›" Height="115" Width="40" Click="Btn_ScvRight_Click" Margin="1070,471,10,26" Background="{x:Null}" FontSize="60" Foreground="Black"></Button>
+                    <Button x:Name="Btn_M_ScvLeft" Content="‹" Height="125" Width="40" Click="Btn_ScvLeft_Click" Margin="10,471,1070,26" Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White"></Button>
+                    <Button x:Name="Btn_M_ScvRight" Content="›" Height="125" Width="40" Click="Btn_ScvRight_Click" Margin="1070,471,10,26" Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White"></Button>
                     <hc:ScrollViewer x:Name="Sve_M_s1" Height="202" Margin="66,408,66,2" Orientation="Horizontal" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
                         <StackPanel x:Name="Stp_M_s1" Orientation="Horizontal">
 
@@ -52,11 +51,11 @@
             <TabItem Visibility="Collapsed">
                 <Grid Height="612">
                     <TextBlock Text="配置" Height="80" Width="300" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="64"/>
-                    <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="386,247,386,0" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" >
+                    <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="386,247,386,0">
                         <RadioButton x:Name="Rbtn_R1" Content="&#xE634; 自动抽取" Click="Rbtn_R1_Click_1" IsChecked="True" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="18" Height="36"/>
                         <RadioButton x:Name="Rbtn_R2" Content="&#xEB32; 手动抽取" Click="Rbtn_R2_Click_1" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="18"/>
                     </hc:ButtonGroup>
-                    <hc:NumericUpDown x:Name="Nud_n1" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,288,584,284" hc:TitleElement.Title="抽取人数" hc:TitleElement.Foreground="White" hc:TitleElement.TitlePlacement="Left"  Style="{StaticResource NumericUpDownExtend}" FontSize="14" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Foreground="Black"/>
+                    <hc:NumericUpDown x:Name="Nud_n1" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,288,584,284" hc:TitleElement.Title="抽取人数" hc:TitleElement.Foreground="White" hc:TitleElement.TitlePlacement="Left"  Style="{StaticResource NumericUpDownExtend}" FontSize="14" Foreground="Black"/>
                     <hc:NumericUpDown x:Name="Nud_n2" Value="13" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="573,290,397,286" FontSize="14" IsEnabled="False"/>
                     <CheckBox Content="使用动画" IsChecked="False" Height="35" Width="85" IsEnabled="False" ToolTip="哪有什么动画啊，根本没写[滑稽]" Margin="386,328,649,249"/>
                     <hc:NumericUpDown x:Name="Nud_stid" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,364,584,208" hc:TitleElement.Title="起始学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
@@ -77,6 +76,7 @@
                     <TextBlock x:Name="Tbk_pz_Info" Height="40" Text="学号表未加载成功哦" FontSize="33" Visibility="Hidden" TextAlignment="Center"  Margin="386,202,386,370" Foreground="#FFFB4587"/>
                     <Button x:Name="Btn_DrawS" Content="&#xE62F; 开始" Click="Btn_DrawS_Click"  Margin="386,488,584,74" Height="50" Width="150" Style="{StaticResource ButtonSuccess}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" />
                     <Button x:Name="Btn_BacktoM" Content="&#xe61c; 主界面" Click="Btn_BacktoM_Click"  Margin="584,488,386,74" Height="50" Width="150" Style="{StaticResource ButtonPrimary}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" />
+                    <TextBlock HorizontalAlignment="Left" Margin="844,579,0,0" TextWrapping="Wrap" Text="背景人物：&lt;ATRI&gt;アトリ" VerticalAlignment="Top" Height="33" Width="282" FontSize="26" Foreground="#FF6D6D6D"/>
                 </Grid>
             </TabItem>
 
