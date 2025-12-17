@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Media.Animation;
 
 namespace ChiyoS.Draw.Komari
 {
@@ -13,6 +14,9 @@ namespace ChiyoS.Draw.Komari
             this.Tbk_Name.Text = name;
             this.Tbk_ID.Text = id;
             this.Tbk_Num.Text = num;
+            Storyboard storyboard = (FindResource("Stbd_1") as Storyboard);
+            storyboard.Begin(Bd_1);
         }
+        
     }
 }

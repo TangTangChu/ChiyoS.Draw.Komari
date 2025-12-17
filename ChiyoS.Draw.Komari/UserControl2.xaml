@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              Height="200" Width="200">
     <Grid>
-        <Border Style="{DynamicResource BorderCircular}">
+        <Border x:Name="Bd_1" Style="{DynamicResource BorderCircular}" Opacity="0">
             <Grid>
                 <TextBlock Text="&#xe600;" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" FontSize="180" TextAlignment="Center" Foreground="#FF008FFA"/>
                 <hc:OutlineText x:Name="Tbk_ID" Text="ID" Fill="White" StrokeThickness="0.5" FontSize="42" TextAlignment="Center" FontWeight="Bold" Margin="0,32,0,107" Stroke="#FF008FFA" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB"/>
@@ -18,4 +18,9 @@
             </Grid>
         </Border>
     </Grid>
+    <UserControl.Resources>
+        <Storyboard x:Key="Stbd_1">
+            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" BeginTime="0:0:0.1" Duration="0:0:1"/>
+        </Storyboard>
+    </UserControl.Resources>
 </UserControl>

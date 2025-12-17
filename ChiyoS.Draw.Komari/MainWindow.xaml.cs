@@ -10,6 +10,8 @@ using System.Threading;
 using System.Linq;
 using System.Windows.Media.Animation;
 using System.Data;
+using System.Windows.Media.Imaging;
+using System.Windows.Media;
 
 namespace ChiyoS.Draw.Komari
 {
@@ -22,15 +24,21 @@ namespace ChiyoS.Draw.Komari
         RandomF2 randomF2 = new RandomF2();
         
         Root root = new Root();
+        Root_bg root_bg = new Root_bg();
         System.Timers.Timer timer1 = new System.Timers.Timer();
         System.Timers.Timer timer_start = new System.Timers.Timer();
         System.Timers.Timer timer_xh = new System.Timers.Timer();
+        System.Timers.Timer timer_bggd = new System.Timers.Timer();
+
+        
 
         int stid = 0;
         int xhn = 0;
         int gt = 0;
         int xhn2 = 0;
         int gt2 = 0;
+        int bgidz = 0;
+        int bgid = 0;
         bool isCanxh = false;
 
         ArrayList al = new ArrayList();
@@ -221,7 +229,7 @@ namespace ChiyoS.Draw.Komari
                 {
                     timer_start.Stop();
                     timer_start.Enabled = false;
-                    Tbk_wel.Text = "欢迎回来！";
+                    Tbk_wel.Text = "Ciallo～(∠·ω< )⌒★";
                     Tbk_wel2.Visibility = Visibility.Hidden;
                     Pgb_wel.Visibility = Visibility.Hidden;
                     Btn_Enter.IsEnabled = true;
@@ -453,8 +461,8 @@ namespace ChiyoS.Draw.Komari
         private void Btn_Enter_Click(object sender, RoutedEventArgs e)
         {
             Btn_Enter.IsEnabled = false;
-            Storyboard storyboard = (FindResource("Entermp") as System.Windows.Media.Animation.Storyboard);
-            Storyboard storyboard2 = (FindResource("Entermp2") as System.Windows.Media.Animation.Storyboard);
+            Storyboard storyboard = (FindResource("Entermp") as Storyboard);
+            Storyboard storyboard2 = (FindResource("Entermp2") as Storyboard);
             storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 1; storyboard2.Begin(Gd_PZ); };
 
 
@@ -602,14 +610,97 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
-                    
+                    try
+                    {
+                        str = File.ReadAllText(@"D:\ChiyoS\Data\bg.json");
+                        root_bg = JsonConvert.DeserializeObject<Root_bg>(str);
+                        timer_bggd.Interval = root_bg.interval;
+                        timer_bggd.Elapsed += Bggd;
+                        timer_bggd.Enabled = true;
+                        timer_bggd.Start();
+                    }
+                    catch
+                    {
+                        Growl.Warning("背景轮换列表JSON文件加载失败");
+                    }
                     //Growl.Success("少女祈祷成功！");
-                    Growl.Info("当前载入 " + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.5.0.0_Standard|当前载入配置文件:" + root.title;
+                    Growl.Info("当前载入:" + root.title);
+                    Title = "ChiyoS.Draw.Komari|Version:2.6.0.0_Standard|当前载入配置文件:" + root.title;
                 }));
             }));
         }
-        
+
+        private void Bggd(object sender, ElapsedEventArgs e) 
+        {
+            try
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    if (bgidz == 0)
+                    {
+                        bgidz = 1;
+                        if (bgid <= root_bg.list.Count - 1)
+                        {                           
+                            Img_bg2.Source = new BitmapImage(new Uri(root_bg.list[bgid].path));
+                        }
+                        Storyboard Stbd_Opacity1 = (FindResource("Opacity1") as Storyboard);
+                        //Stbd_Opacity4.Completed += (o, a) => {Stbd_Opacity3.Begin(Tbk_bgif) };          
+                        Stbd_Opacity1.Begin(Img_bg2);
+                    }
+                    else
+                    {
+                        bgidz = 0;
+                        if (bgid <= root_bg.list.Count - 1)
+                        {                         
+                            Img_bg1.Source = new BitmapImage(new Uri(root_bg.list[bgid].path));
+                        }
+                        Storyboard Stbd_Opacity2 = (FindResource("Opacity2") as Storyboard);
+                        //Stbd_Opacity4.Completed += (o, a) => {Stbd_Opacity3.Begin(Tbk_bgif) };          
+                        Stbd_Opacity2.Begin(Img_bg2);
+                    }
+                    Tbk_wel_bgif.Text = root_bg.list[bgid].text;
+                    Tbk_PZ_bgif.Text = root_bg.list[bgid].text;
+                    if (root_bg.list[bgid].color == "Black")
+                    {
+                        Tbk_RST_Count.Foreground = new SolidColorBrush(Colors.Black);
+                        Tbk_RST_Info.Foreground = new SolidColorBrush(Colors.Black);
+                        Tbk_RST_Text.Foreground = new SolidColorBrush(Colors.Black);
+                    }
+                    else
+                    {
+                        Tbk_RST_Count.Foreground = new SolidColorBrush(Colors.White);
+                        Tbk_RST_Info.Foreground = new SolidColorBrush(Colors.White);
+                        Tbk_RST_Text.Foreground = new SolidColorBrush(Colors.White);
+                    }
+                    if (bgid == root_bg.list.Count - 1)
+                    {
+                        bgid = 0;
+                    }
+                    else
+                    {
+                        bgid++;
+                    }
+                }));
+                
+            }
+            catch(Exception ex)
+            {
+                Growl.Warning("BGGD:" + ex.Message);
+                if (bgid == root_bg.list.Count - 1)
+                {
+                    bgid = 0;
+                }
+                else
+                {
+                    bgid++;
+                }
+            }
+            //Storyboard Stbd_Opacity3 = (FindResource("Opacity3") as Storyboard);
+            //Storyboard Stbd_Opacity4 = (FindResource("Opacity4") as Storyboard);
+            
+        }
+
+
         private ArrayList Getname(int[] nm, int tid)
         {
             ArrayList names = new ArrayList();
