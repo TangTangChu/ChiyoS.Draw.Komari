@@ -8,6 +8,8 @@ using System.Timers;
 using System.Windows;
 using System.Threading;
 using System.Linq;
+using System.Windows.Media.Animation;
+using System.Data;
 
 namespace ChiyoS.Draw.Komari
 {
@@ -55,15 +57,15 @@ namespace ChiyoS.Draw.Komari
                         Growl.Warning("起始学号不可以大于终止学号！");
                         return;
                     }
-                    Tbk_M_Text.Text = "执行中";
+                    Tbk_RST_Text.Text = "执行中";
 
-                    Tbcl.SelectedIndex = 1;
-                    Btn_M_BacktoPG.IsEnabled = false;
-                    Btn_M_Cancle.IsEnabled = false;
-                    Btn_M_Restart.IsEnabled = false;
-                    Stp_M_s1.Children.Clear();
+                    Tbcl.SelectedIndex = 2;
+                    Btn_RST_BacktoPZ.IsEnabled = false;
+                    Btn_RST_Cancle.IsEnabled = false;
+                    Btn_RST_Restart.IsEnabled = false;
+                    Stp_RST_s1.Children.Clear();
                     //抽取的人数
-                    int a = (int)Nud_n1.Value;
+                    int a = (int)Nud_cqrs.Value;
 
                     int[] arr = new int[] { };
 
@@ -109,20 +111,20 @@ namespace ChiyoS.Draw.Komari
                         
                         
                         AddCh(arr,Cbx_cqgt.SelectedIndex);
-                        Tbk_M_Text.Text = "抽取完成";
-                        Tbk_M_Info.Text = "[自动模式] 任务结束";
-                        Btn_M_BacktoPG.IsEnabled = true;
+                        Tbk_RST_Text.Text = "抽取完成";
+                        Tbk_RST_Info.Text = "[自动模式] 任务结束";
+                        Btn_RST_BacktoPZ.IsEnabled = true;
                         Growl.Success("[自动模式] 抽取完成");
-                        Btn_M_Restart.IsEnabled = true;
+                        Btn_RST_Restart.IsEnabled = true;
                     }
                     catch (Exception ex)
                     {
-                        Tbk_M_Text.Text = "ERROR!";
-                        Tbk_M_Info.Text = "[自动模式] 错误！";
+                        Tbk_RST_Text.Text = "ERROR!";
+                        Tbk_RST_Info.Text = "[自动模式] 错误！";
                         Growl.Error("[自动模式] 程序执行时遇到错误！");
                         HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
-                        Btn_M_BacktoPG.IsEnabled = true;
-                        Btn_M_Restart.IsEnabled = true;
+                        Btn_RST_BacktoPZ.IsEnabled = true;
+                        Btn_RST_Restart.IsEnabled = true;
                         return;
                     }
 
@@ -139,23 +141,23 @@ namespace ChiyoS.Draw.Komari
                 Dispatcher.Invoke(() =>
                 {
                     isCanxh = true;
-                    Nud_n1.IsEnabled = false;
+                    Nud_cqrs.IsEnabled = false;
                     BtnG.IsEnabled = false;
-                    Nud_n2.IsEnabled = false;
-                    Stp_M_s1.Children.Clear();
-                    Btn_M_Restart.IsEnabled = false;
-                    Tbk_M_Count.Text = string.Format("共 {0} 个", Stp_M_s1.Children.Count);
-                    Tbk_M_Text.Text = "";
+                    Nud_interval.IsEnabled = false;
+                    Stp_RST_s1.Children.Clear();
+                    Btn_RST_Restart.IsEnabled = false;
+                    Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
+                    Tbk_RST_Text.Text = "";
 
                     al.Clear();
 
-                    Btn_M_cq.Visibility = Visibility.Visible;
-                    Btn_M_cq.IsEnabled = true;
-                    Btn_M_Cancle.IsEnabled = true;
-                    Tbcl.SelectedIndex = 1;
+                    Btn_RST_cq.Visibility = Visibility.Visible;
+                    Btn_RST_cq.IsEnabled = true;
+                    Btn_RST_Cancle.IsEnabled = true;
+                    Tbcl.SelectedIndex = 2;
                     
-                    Tbk_M_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_n1.Value);
-                    if (Rbtn_R3.IsChecked==true)
+                    Tbk_RST_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_cqrs.Value);
+                    if (Rbtn_GDMZ.IsChecked==true)
                     {
                         xhn2 = 1;
                         gt2 = 0;
@@ -172,7 +174,7 @@ namespace ChiyoS.Draw.Komari
                             seletlist = girls;
                         }
                         timer_xh.Enabled = true;
-                        timer_xh.Interval = Nud_n2.Value;
+                        timer_xh.Interval = Nud_interval.Value;
                         timer_xh.Start();
                         
                     }
@@ -181,7 +183,7 @@ namespace ChiyoS.Draw.Komari
                         xhn = 1;
                         gt = 0;
                         timer1.Enabled = true;
-                        timer1.Interval = Nud_n2.Value;//循环频率
+                        timer1.Interval = Nud_interval.Value;//循环频率
                         timer1.Start();
                     }
                              });
@@ -195,23 +197,25 @@ namespace ChiyoS.Draw.Komari
             }
             Dispatcher.Invoke(new Action(() =>
             {
-                if (xhn2 <= seletlist.Count)
+                isCanxh = false;
+                if (xhn2 <= (int)Nud_endid.Value)
                 {
-                    Tbk_M_Text.Text = seletlist[xhn2-1].ToString();
+                    Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
                     xhn2++;
                 }
                 else
                 {
-                    xhn2 = 1;
-                    Tbk_M_Text.Text = seletlist[xhn2-1].ToString();
+                    xhn2 = (int)Nud_stid.Value;
+                    Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
                 }
+                isCanxh = true;
             }));
         }
 
 
         private void ST(object sender, ElapsedEventArgs e)
         {
-            if (stid == 2)
+            if (stid == 4)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -237,16 +241,18 @@ namespace ChiyoS.Draw.Komari
             }
             Dispatcher.Invoke(new Action(() =>
             {
+                isCanxh = false;
                 if (xhn <= (int)Nud_endid.Value)
                 {
-                    Tbk_M_Text.Text = xhn.ToString();
+                    Tbk_RST_Text.Text = xhn.ToString();
                     xhn++;
                 }
                 else
                 {
                     xhn = (int)Nud_stid.Value;
-                    Tbk_M_Text.Text = xhn.ToString();
+                    Tbk_RST_Text.Text = xhn.ToString();
                 }
+                isCanxh = true;
             }));
 
         }
@@ -268,89 +274,105 @@ namespace ChiyoS.Draw.Komari
                         if (root.students[arr[i] - 1].s == "b")
                         {
 
-                            Stp_M_s1.Children.Add(new UserControl2(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_M_s1.Children.Count + 1).ToString()));
+                            Stp_RST_s1.Children.Add(new UserControl2(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
                         }
                         else
                         {
-                            Stp_M_s1.Children.Add(new UserControl1(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_M_s1.Children.Count + 1).ToString()));
+                            Stp_RST_s1.Children.Add(new UserControl1(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
                         }
-                        Tbk_M_Count.Text = string.Format("共 {0} 个", Stp_M_s1.Children.Count);
-                        double d = Sve_M_s1.ActualWidth;
-                        Sve_M_s1.ScrollToHorizontalOffset(d);
+                        Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
+                        double d = Scve_RST_s1.ActualWidth;
+                        Scve_RST_s1.ScrollToHorizontalOffset(d);
                     }               
                 }
                 else if (mode == 1)
                 {
                     for(int i = 0; i < arr.Length; i++)
                     {
-                        Stp_M_s1.Children.Add(new UserControl2("", boys[arr[i] - 1].ToString(), (Stp_M_s1.Children.Count + 1).ToString()));
+                        Stp_RST_s1.Children.Add(new UserControl2("", boys[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
                     }
                 }
                 else if(mode == 2)
                 {
                     for (int i = 0; i < arr.Length; i++)
                     {
-                        Stp_M_s1.Children.Add(new UserControl1("", girls[arr[i] - 1].ToString(), (Stp_M_s1.Children.Count + 1).ToString()));
+                        Stp_RST_s1.Children.Add(new UserControl1("", girls[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
                     }
                 }
             }));
         }
 
-        private void Btn_M_cq_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Btn_RST_cq_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (Rbtn_R4.IsChecked == true)
+            if (Rbtn_GDXH.IsChecked == true)
             {
-                if (gt < Nud_n1.Value)
+                if (gt < Nud_cqrs.Value)
                 {
-                    int s1 = int.Parse(Tbk_M_Text.Text);
-                    Console.Write("抽取到TARGET {0} 号，查重中...", s1);
+                    int s1 = int.Parse(Tbk_RST_Text.Text);
+                    Console.Write("抽取到TARGET {0} 号，检查正确性...", s1);
+                    if (s1 < (int)Nud_stid.Value || s1 > (int)Nud_endid.Value)
+                    {
+                        Growl.Warning("抽取TARGET命中限定范围之外，操作无效！\n请继续抽取！");
+                        Console.WriteLine("[TARGET {0} 号 命中限定范围之外][执行操作：作废]", s1);
+                        Tbk_RST_Info.Text = string.Format("[TARGET {0} 号 命中限定范围之外] 程序已将此操作结果撤销，请继续！", s1);
+                        return;
+                    }
                     foreach (int i in al)
                     {
                         if (i == s1)
                         {
                             Growl.Warning("抽取TARGET有重复，操作无效！\n请继续抽取！");
                             Console.WriteLine("[TARGET {0} 号 重复][执行操作：撤销]", s1);
-                            Tbk_M_Info.Text = string.Format("[{0} 号 已重复] 程序已将此操作结果撤销，请继续！", s1);
+                            Tbk_RST_Info.Text = string.Format("[{0} 号 已重复] 程序已将此操作结果撤销，请继续！", s1);
                             return;
                         }
                     }
                     Console.WriteLine("[未重复]");
-                    Tbk_M_Info.Text = string.Format("[未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt - 1);
+                    Tbk_RST_Info.Text = string.Format("[未重复] 请继续，还剩 {0} 个", Nud_cqrs.Value - gt - 1);
                     al.Add(s1);
                     int[] ar = new int[] { s1 };
                     AddCh(ar, 0);
                     gt++;
 
                 }
-                if (gt >= Nud_n1.Value)
+                if (gt >= Nud_cqrs.Value)
                 {
-                    StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
+                    StopMualTask("[手动模式] 抽取完成!(如果上方有学号请忽略)", "抽取完成");
                 }
             }
-            else if(Rbtn_R3.IsChecked == true)
+            else if(Rbtn_GDMZ.IsChecked == true)
             {
-                if (gt2 < Nud_n1.Value)
+                if (gt2 < Nud_cqrs.Value)
                 {
-                    string czgt = Tbk_M_Text.Text;
-                    Console.Write("抽取到TARGET {0} ，查重中...", czgt);
+                    string czgt = Tbk_RST_Text.Text;
+                    int czgtid = Everyone.IndexOf(czgt) + 1;
+                    Console.Write("抽取到TARGET {0} ，检查正确性...", czgt);
+                    if (czgtid < (int)Nud_stid.Value||czgtid>(int)Nud_endid.Value)
+                    {
+                        Growl.Warning("抽取TARGET命中限定范围之外，操作无效！\n请继续抽取！");
+                        Console.WriteLine("[TARGET {0}  命中限定范围之外][执行操作：作废]", czgt);
+                        Tbk_RST_Info.Text = string.Format("[TARGET{0}  命中限定范围之外] 程序已将此操作结果撤销，请继续！", czgt);
+                        return;
+                    }
                     foreach(string sr in al)
                     {
+                        
                         if(czgt == sr)
                         {
                             Growl.Warning("抽取TARGET有重复，操作无效！\n请继续抽取！");
                             Console.WriteLine("[TARGET {0}  重复][执行操作：撤销操作]", czgt);
-                            Tbk_M_Info.Text = string.Format("[TARGET{0}  已重复] 程序已将此操作结果撤销，请继续！", czgt);
+                            Tbk_RST_Info.Text = string.Format("[TARGET{0}  已重复] 程序已将此操作结果撤销，请继续！", czgt);
                             return;
                         }
                     }
                     Console.WriteLine("[未重复]");
-                    Tbk_M_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt2 - 1);
+                    Tbk_RST_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_cqrs.Value - gt2 - 1);
                     al.Add(czgt);
-                    int[] ar = new int[] { Everyone.IndexOf(czgt)+1 };
+                    int[] ar = new int[] { czgtid };
                     AddCh(ar, 0);
                     gt2++;
                 }
-                if(gt2>= Nud_n1.Value)
+                if(gt2>= Nud_cqrs.Value)
                 {
                     StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
                 }
@@ -360,7 +382,7 @@ namespace ChiyoS.Draw.Komari
         private void StopMualTask(string Infotext, string TText)
         {
             isCanxh = false;
-            if(Rbtn_R4.IsChecked == true)
+            if(Rbtn_GDXH.IsChecked == true)
             {
                 timer1.Stop();
                 timer1.Enabled = false;
@@ -372,30 +394,26 @@ namespace ChiyoS.Draw.Komari
             }
             
 
-            Nud_n1.IsEnabled = true;
-            Nud_n2.IsEnabled = true;
+            Nud_cqrs.IsEnabled = true;
+            Nud_interval.IsEnabled = true;
             BtnG.IsEnabled = true;
-            Btn_M_Cancle.IsEnabled = false;
-            Btn_M_cq.IsEnabled = false;
-            Btn_M_BacktoPG.IsEnabled = true;
-            Btn_M_Restart.IsEnabled = true;
-            Tbk_M_Info.Text = Infotext;
-            Tbk_M_Text.Text = TText;
+            Btn_RST_Cancle.IsEnabled = false;
+            Btn_RST_cq.IsEnabled = false;
+            Btn_RST_BacktoPZ.IsEnabled = true;
+            Btn_RST_Restart.IsEnabled = true;
+            Tbk_RST_Info.Text = Infotext;
+            Tbk_RST_Text.Text = TText;
         }
 
-        private void Btn_DrawS_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Btn_PZ_DrawS_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (Rbtn_R1.IsChecked == true)
+            if (Rbtn_RAuto.IsChecked == true)
             {
                 ChouQian_Auto();
             }
-            else if (Rbtn_R2.IsChecked == true)
+            else if (Rbtn_RManual.IsChecked == true)
             {
                 ChouQian_Manual();
-            }
-            else
-            {
-
             }
         }
 
@@ -411,40 +429,50 @@ namespace ChiyoS.Draw.Komari
             }
         }
 
-        private void Btn_Cancle_Click(object sender, RoutedEventArgs e)
+        private void Btn_RST_Cancle_Click(object sender, RoutedEventArgs e)
         {
             StopMualTask("[手动模式] 已终止Task", "已终止！");
         }
 
-        private void Btn_ScvLeft_Click(object sender, RoutedEventArgs e)
+        private void Btn_RST_ScvLeft_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                Sve_M_s1.ScrollToHorizontalOffsetWithAnimation(Sve_M_s1.HorizontalOffset - 155);
+                Scve_RST_s1.ScrollToHorizontalOffsetWithAnimation(Scve_RST_s1.HorizontalOffset - 155);
             }));
         }
 
-        private void Btn_ScvRight_Click(object sender, RoutedEventArgs e)
+        private void Btn_RST_ScvRight_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                Sve_M_s1.ScrollToHorizontalOffsetWithAnimation(Sve_M_s1.HorizontalOffset + 155);
+                Scve_RST_s1.ScrollToHorizontalOffsetWithAnimation(Scve_RST_s1.HorizontalOffset + 155);
             }));
         }
-
+       
         private void Btn_Enter_Click(object sender, RoutedEventArgs e)
         {
-            Tbcl.SelectedIndex = 2;
+            Btn_Enter.IsEnabled = false;
+            Storyboard storyboard = (FindResource("Entermp") as System.Windows.Media.Animation.Storyboard);
+            Storyboard storyboard2 = (FindResource("Entermp2") as System.Windows.Media.Animation.Storyboard);
+            storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 1; storyboard2.Begin(Gd_PZ); };
+
+
+            //storyboard2.Completed += (o, a) => { Tbcl.SelectedIndex = 1; };
+            storyboard.Begin();
+            //去配置页
         }
 
-        private void Btn_BacktoM_Click(object sender, RoutedEventArgs e)
+        private void Btn_PZ_ToRST_Click(object sender, RoutedEventArgs e)
+        {
+            Tbcl.SelectedIndex = 2;
+            //去结果页
+        }
+
+        private void Btn_RST_BacktoPZ_Click(object sender, RoutedEventArgs e)
         {
             Tbcl.SelectedIndex = 1;
-        }
-
-        private void Btn_M_BacktoPG_Click(object sender, RoutedEventArgs e)
-        {
-            Tbcl.SelectedIndex = 2;
+            //去配置页
         }
 
         /// <summary>
@@ -452,24 +480,33 @@ namespace ChiyoS.Draw.Komari
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Rbtn_R1_Click_1(object sender, RoutedEventArgs e)
+        private void Rbtn_RAuto_Click_1(object sender, RoutedEventArgs e)
         {
-            Nud_n2.IsEnabled = false;
-            BtnG_2.IsEnabled = false;
-            Cbx_sf.IsEnabled = true;
+            MessageBoxResult vr = HandyControl.Controls.MessageBox.Show("自动模式下的概率并不平均哦，是否切换为手动模式？", "不推荐的操作", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (vr == MessageBoxResult.Yes) // 如果是确定，就执行下面代码
+            {
+                Rbtn_RManual.IsChecked = true;
+                
+            }
+            else
+            {
+                Nud_interval.IsEnabled = false;
+                BtnG_2.IsEnabled = false;
+                Cbx_sf.IsEnabled = true;
+            }
         }
         /// <summary>
         /// 按钮组选择 手动模式 的事件
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Rbtn_R2_Click_1(object sender, RoutedEventArgs e)
+        private void Rbtn_RManual_Click_1(object sender, RoutedEventArgs e)
         {
             if (Cbx_cqgt.SelectedIndex == 0)
             {
                 BtnG_2.IsEnabled = true;
             }
-            Nud_n2.IsEnabled = true;
+            Nud_interval.IsEnabled = true;
             Cbx_sf.IsEnabled = false;
         }
 
@@ -484,24 +521,24 @@ namespace ChiyoS.Draw.Komari
             {
                 Nud_stid.IsEnabled = true;
                 Nud_endid.IsEnabled = true;
-                Nud_n1.Maximum = root.students.Count;
+                Nud_cqrs.Maximum = root.students.Count;
                 BtnG_2.IsEnabled = true;
             }
             else if (Cbx_cqgt.SelectedIndex == 1)
             {
                 Nud_stid.IsEnabled = false;
                 Nud_endid.IsEnabled = false;
-                Nud_n1.Maximum = boys.Count;
+                Nud_cqrs.Maximum = boys.Count;
                 BtnG_2.IsEnabled = false;
-                Rbtn_R3.IsChecked = true;
+                Rbtn_GDMZ.IsChecked = true;
             }
             else if (Cbx_cqgt.SelectedIndex == 2)
             {
                 Nud_stid.IsEnabled = false;
                 Nud_endid.IsEnabled = false;
-                Nud_n1.Maximum = girls.Count;
+                Nud_cqrs.Maximum = girls.Count;
                 BtnG_2.IsEnabled = false;
-                Rbtn_R3.IsChecked = true;
+                Rbtn_GDMZ.IsChecked = true;
             }
         }
 
@@ -533,11 +570,11 @@ namespace ChiyoS.Draw.Komari
                         timer_start.Stop();
                         timer_start.Enabled = false;
                         Growl.Error("加载Json数据失败！");
-                        Btn_DrawS.IsEnabled = false;
-                        Btn_BacktoM.IsEnabled = false;
+                        Btn_PZ_DrawS.IsEnabled = false;
+                        Btn_PZ_ToRST.IsEnabled = false;
                         Btn_Enter.IsEnabled = true;
                         Btn_Enter.Visibility = Visibility.Visible;
-                        Tbk_pz_Info.Visibility = Visibility.Visible;
+                        Tbk_PZ_Info.Visibility = Visibility.Visible;
                         Tbk_wel.Text = "少女祈祷失败";
                         Tbk_wel2.Text = "加载Json数据失败！";
                         Pgb_wel.Visibility = Visibility.Hidden;
@@ -545,7 +582,7 @@ namespace ChiyoS.Draw.Komari
                         return;
                     }
                     
-                    Nud_n1.Maximum = root.students.Count;
+                    Nud_cqrs.Maximum = root.students.Count;
                     Nud_endid.Maximum = root.students.Count;
                     try
                     {
@@ -568,7 +605,7 @@ namespace ChiyoS.Draw.Komari
                     
                     //Growl.Success("少女祈祷成功！");
                     Growl.Info("当前载入 " + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.4.0.0_Standard|当前载入配置文件:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.5.0.0_Standard|当前载入配置文件:" + root.title;
                 }));
             }));
         }
@@ -606,9 +643,9 @@ namespace ChiyoS.Draw.Komari
         }
 
 
-        private void Btn_M_Restart_Click(object sender, RoutedEventArgs e)
+        private void Btn_RST_Restart_Click(object sender, RoutedEventArgs e)
         {
-            Btn_DrawS_Click(sender, e);
+            Btn_PZ_DrawS_Click(sender, e);
         }
     }
 }
