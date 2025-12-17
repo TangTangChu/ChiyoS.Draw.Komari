@@ -13,6 +13,5 @@ namespace ChiyoS.Draw.Komari
     /// </summary>
     public partial class App : Application
     {
-        
     }
 }
