@@ -1,0 +1,676 @@
+﻿using HandyControl.Controls;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections;
+using System.IO;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows;
+using System.Windows.Controls;
+using Lierda.WPFHelper;
+
+namespace ChiyoS.Draw.Komari
+{
+    /// <summary>
+    /// MainWindow.xaml 的交互逻辑
+    /// </summary>
+    public partial class MainWindow : HandyControl.Controls.Window
+    {
+        RandomF randomF = new RandomF();
+        RandomF2 randomF2 = new RandomF2();
+
+        Root root = new Root();
+
+        LierdaCracker cracker = new LierdaCracker();
+        System.Timers.Timer timer1 = new System.Timers.Timer();
+        System.Timers.Timer timer_start = new System.Timers.Timer();
+        System.Timers.Timer timer_xh = new System.Timers.Timer();
+        
+        int stid = 0;
+        int xhn = 0;
+        int gt = 0;
+        int xhn2 = 0;
+        int gt2 = 0;
+        bool isCanxh = false;
+        int[] cvid;
+
+        ArrayList al = new ArrayList();
+        ArrayList Everyone = new ArrayList();
+        ArrayList boys = new ArrayList();
+        ArrayList girls = new ArrayList();
+        ArrayList seletlist = new ArrayList();
+
+        public MainWindow()
+        {          
+            InitializeComponent();
+            cracker.Cracker();
+            
+
+        }
+
+        /// <summary>
+        /// 抽签-自动模式
+        /// </summary>
+        private void ChouQian_Auto()
+        {
+            Task.Run(() =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    
+                    if (Nud_stid.Value > Nud_endid.Value)
+                    {
+                        Growl.Warning("起始学号不可以大于终止学号！");
+                        return;
+                    }
+                    Tbk_M_Text.Text = "执行中";
+
+                    Tbcl.SelectedIndex = 1;
+                    Btn_M_BacktoPG.IsEnabled = false;
+                    Btn_M_Cancle.IsEnabled = false;
+                    Btn_M_Restart.IsEnabled = false;
+                    Stp_M_s1.Children.Clear();
+                    //抽取的人数
+                    int a = (int)Nud_n1.Value;
+
+                    int[] arr = new int[] { };
+
+                    if (Cbx_cqgt.SelectedIndex == 0)
+                    {
+                        if (Cbx_sf.SelectedIndex == 0)
+                        {
+                            arr = randomF2.GenerateUniqueRandom((int)Nud_stid.Value, (int)Nud_endid.Value, a);
+                        }
+                        else if (Cbx_sf.SelectedIndex == 1)
+                        {
+                            arr = randomF.GenerateUniqueRandom((int)Nud_stid.Value, (int)Nud_endid.Value, a);
+                        }
+                    }
+                    else if (Cbx_cqgt.SelectedIndex == 1)//如果只抽取男孩子
+                    {
+                        if (Cbx_sf.SelectedIndex == 0)
+                        {
+                            arr = randomF2.GenerateUniqueRandom(1, boys.Count, a);
+                        }
+                        else if (Cbx_sf.SelectedIndex == 1)
+                        {
+                            arr = randomF.GenerateUniqueRandom(1, girls.Count, a);
+                        }
+                    }
+                    else if (Cbx_cqgt.SelectedIndex == 2)//如果只抽取女孩子
+                    {
+                        if (Cbx_sf.SelectedIndex == 0)
+                        {
+                            arr = randomF2.GenerateUniqueRandom(1, girls.Count, a);
+                        }
+                        else if (Cbx_sf.SelectedIndex == 1)
+                        {
+                            arr = randomF.GenerateUniqueRandom(1, girls.Count, a);
+                        }
+                    }
+
+                    Console.WriteLine("---[自动模式] 生成的随机数---");
+                    Console.WriteLine(string.Join("\n", arr));
+                    
+                    try
+                    {
+                        AddCh(arr, Cbx_cqgt.SelectedIndex, 2);
+                        Tbk_M_Text.Text = "抽取完成";
+                        Tbk_M_Info.Text = "[自动模式] 任务结束";
+                        Btn_M_BacktoPG.IsEnabled = true;
+                        Growl.Success("[自动模式] 抽取完成");
+                        Btn_M_Restart.IsEnabled = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        Tbk_M_Text.Text = "出现了一个错误";
+                        Tbk_M_Info.Text = "[自动模式] 错误！";
+                        Growl.Error("[自动模式] 程序执行时遇到错误！");
+                        HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
+                        Btn_M_BacktoPG.IsEnabled = true;
+                        Btn_M_Restart.IsEnabled = true;
+                        return;
+                    }
+
+                }));
+            });
+        }
+        /// <summary>
+        /// 抽签-手动模式
+        /// </summary>
+        private void ChouQian_Manual()
+        {
+            Task.Run(() =>
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    
+                    isCanxh = true;
+                    Nud_n1.IsEnabled = false;
+                    BtnG.IsEnabled = false;
+                    Nud_n2.IsEnabled = false;
+                    Btn_M_Restart.IsEnabled = false;
+                    Stp_M_s1.Children.Clear();
+                    Tbk_M_Count.Text = string.Format("共 {0} 个", Stp_M_s1.Children.Count);
+                    Tbk_M_Text.Text = "";
+
+                    al.Clear();
+
+                    Btn_M_cq.Visibility = Visibility.Visible;
+                    Btn_M_cq.IsEnabled = true;
+                    Btn_M_Cancle.IsEnabled = true;
+                    Tbcl.SelectedIndex = 1;
+
+                    Tbk_M_Info.Text = string.Format("[手动模式] 本次将抽取{0}位，请点击抽取按钮自主抽取！", Nud_n1.Value);
+                    if (Rbtn_R3.IsChecked == true)
+                    {
+                        xhn2 = 1;
+                        gt2 = 0;
+                        if (Cbx_cqgt.SelectedIndex == 0)
+                        {
+                            seletlist = Everyone;
+                        }
+                        else if (Cbx_cqgt.SelectedIndex == 1)
+                        {
+                            seletlist = boys;
+                        }
+                        else if (Cbx_cqgt.SelectedIndex == 2)
+                        {
+                            seletlist = girls;
+                        }
+                        timer_xh.Enabled = true;
+                        timer_xh.Interval = Nud_n2.Value;
+                        timer_xh.Start();
+
+                    }
+                    else
+                    {
+                        xhn = 1;
+                        gt = 0;
+                        timer1.Enabled = true;
+                        timer1.Interval = Nud_n2.Value;//循环频率
+                        timer1.Start();
+                    }
+                });
+            });
+        }
+        /// <summary>
+        /// 手动模式的循环学号
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void XHName(object sender, ElapsedEventArgs e)
+        {
+            if (isCanxh == false)
+            {
+                return;
+            }
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (xhn2 <= seletlist.Count)
+                {
+                    Tbk_M_Text.Text = seletlist[xhn2 - 1].ToString();
+                    xhn2++;
+                }
+                else
+                {
+                    xhn2 = 1;
+                    Tbk_M_Text.Text = seletlist[xhn2 - 1].ToString();
+                }
+            }));
+        }
+
+
+        private void ST(object sender, ElapsedEventArgs e)
+        {
+            if (stid == 2)
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    timer_start.Stop();
+                    timer_start.Enabled = false;
+                    Tbk_wel.Text = "おかえりなさい！";
+                    Tbk_wel2.Visibility = Visibility.Hidden;
+                    Pgb_wel.Visibility = Visibility.Hidden;
+                    Btn_Enter.IsEnabled = true;
+                    Btn_Enter.Visibility = Visibility.Visible;
+
+                    // MDE.Play();
+                }));
+            }
+            else
+            {
+                stid++;
+            }
+        }
+        private void XHNum(object sender, ElapsedEventArgs e)
+        {
+            if (isCanxh == false)
+            {
+                return;
+            }
+            Dispatcher.Invoke(new Action(() =>
+            {
+                if (xhn <= (int)Nud_endid.Value)
+                {
+                    Tbk_M_Text.Text = xhn.ToString();
+                    xhn++;
+                }
+                else
+                {
+                    xhn = (int)Nud_stid.Value;
+                    Tbk_M_Text.Text = xhn.ToString();
+                }
+            }));
+
+        }
+        /// <summary>
+        /// 展示被抽中的同学
+        /// </summary>
+        /// <param name="arr">学号列表</param>
+        /// <param name="mode">模式</param>
+        private void AddCh(int[] arr, int mode, int styleid)
+        {
+            if (Cbx_usingnew.IsChecked == true)
+            {
+                styleid = 2;
+
+            }
+            else
+            {
+                styleid = 1;
+            }
+            Dispatcher.Invoke(new Action(() =>
+            {
+            if (mode == 0)
+            {
+                if (styleid == 1)
+                {
+                    for (int i = 0; i < arr.Length; i++)
+                    {                       
+                        if (root.students[arr[i] - 1].s == "b")
+                        {
+                            Stp_M_s1.Children.Add(new UserControl2(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_M_s1.Children.Count + 1).ToString()));
+                        }
+                        else
+                        {
+                            Stp_M_s1.Children.Add(new UserControl1(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_M_s1.Children.Count + 1).ToString()));
+                        }                        
+                    }
+                }
+                    else
+                    {
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            
+                            UserControl3 u3 = new UserControl3(root.students[arr[i] - 1].name, root.students[arr[i] - 1].s, (Stp_M_s1.Children.Count + 1).ToString(), cvid[Stp_M_s1.Children.Count]);
+                            Stp_M_s1.Children.Add(u3);
+                            
+                        }
+                    }
+                }
+                else if (mode == 1)
+            {
+                    if (styleid == 1)
+                    {
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            Stp_M_s1.Children.Add(new UserControl2("", boys[arr[i] - 1].ToString(), (Stp_M_s1.Children.Count + 1).ToString()));
+                        }
+                        
+                    }
+                    else if (styleid == 2)
+                    {
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            UserControl3 u3 = new UserControl3(boys[arr[i] - 1].ToString(), "b", (Stp_M_s1.Children.Count + 1).ToString(), cvid[Stp_M_s1.Children.Count]);
+                            Stp_M_s1.Children.Add(u3);
+                        }
+                        
+                    }
+                }
+                else if (mode == 2)
+                {
+                    if (styleid == 1)
+                    {
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            Stp_M_s1.Children.Add(new UserControl1("", girls[arr[i] - 1].ToString(), (Stp_M_s1.Children.Count + 1).ToString()));
+                        }
+                        
+                    }
+                    else if (styleid == 2)
+                    {
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            UserControl3 u3 = new UserControl3(girls[arr[i] - 1].ToString(), "g", (Stp_M_s1.Children.Count + 1).ToString(), cvid[Stp_M_s1.Children.Count]);
+                            Stp_M_s1.Children.Add(u3);
+                        }
+                        
+                    }
+                }
+                Tbk_M_Count.Text = string.Format("共 {0} 个", Stp_M_s1.Children.Count);
+                double d = Sve_M_s1.ActualWidth;
+                Sve_M_s1.ScrollToHorizontalOffset(d);
+
+
+
+            }));
+        }
+
+        private void Btn_M_cq_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (Rbtn_R4.IsChecked == true)
+            {
+                if (gt < Nud_n1.Value)
+                {
+                    int s1 = int.Parse(Tbk_M_Text.Text);
+                    Console.Write("抽取到TARGET {0} 号，查重中...", s1);
+                    foreach (int i in al)
+                    {
+                        if (i == s1)
+                        {
+                            Growl.Warning("抽取目标有重复，已舍弃！\n请继续抽取！");
+                            Console.WriteLine("[TARGET {0} 号 重复][执行操作：舍弃]", s1);
+                            Tbk_M_Info.Text = string.Format("[TARGET {0} 号 已重复] 程序已将此次操作舍去，请继续", s1);
+                            return;
+                        }
+                    }
+                    Console.WriteLine("[未重复]");
+                    Tbk_M_Info.Text = string.Format("[未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt - 1);
+                    al.Add(s1);
+                    int[] ar = new int[] { s1 };
+                    AddCh(ar, 0,2);
+                    gt++;
+
+                }
+                if (gt >= Nud_n1.Value)
+                {
+                    StopMualTask("[手动模式] 抽取完成!", "抽取完成");
+                }
+            }
+            else if(Rbtn_R3.IsChecked == true)
+            {
+                if (gt2 < Nud_n1.Value)
+                {
+                    string czgt = Tbk_M_Text.Text;
+                    Console.Write("抽取到 TARGET {0} ，查重中...", czgt);
+                    foreach(string sr in al)
+                    {
+                        if(czgt == sr)
+                        {
+                            Growl.Warning("抽取TARGET有重复，已舍弃！\n请继续抽取！");
+                            Console.WriteLine("[TARGET {0}  重复][执行操作：舍弃]", czgt);
+                            Tbk_M_Info.Text = string.Format("[TARGET{0}  已重复] 程序已将此次操作舍去，请继续", czgt);
+                            return;
+                        }
+                    }
+                    Console.WriteLine("[未重复]");
+                    Tbk_M_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_n1.Value - gt - 1);
+                    al.Add(czgt);
+                    int[] ar = new int[] { Everyone.IndexOf(czgt)+1 };
+                    AddCh(ar, 0,2);
+                    gt2++;
+                }
+                if(gt2>= Nud_n1.Value)
+                {
+                    StopMualTask("[手动模式] 抽取完成!", "抽取完成");
+                }
+            }
+        }
+
+        private void StopMualTask(string Infotext, string TText)
+        {
+            isCanxh = false;
+            if(Rbtn_R4.IsChecked == true)
+            {
+                timer1.Stop();
+                timer1.Enabled = false;
+            }
+            else
+            {
+                timer_xh.Stop();
+                timer_xh.Enabled = false;
+            }
+            
+
+            Nud_n1.IsEnabled = true;
+            Nud_n2.IsEnabled = true;
+            BtnG.IsEnabled = true;
+            Btn_M_Cancle.IsEnabled = false;
+            Btn_M_cq.IsEnabled = false;
+            Btn_M_BacktoPG.IsEnabled = true;
+            Btn_M_Restart.IsEnabled = true;
+            Tbk_M_Info.Text = Infotext;
+            Tbk_M_Text.Text = TText;
+        }
+
+        private void Btn_DrawS_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            int[] nl = { };
+            cvid = nl ;
+            for (int i = 0; i <= 6; i++)
+            {
+                int[] a = randomF2.GenerateUniqueRandom(1, 8, 8);
+                List<int> r = new List<int>();
+                r.AddRange(cvid);
+                r.AddRange(a);
+                cvid = r.ToArray();
+            }
+            Console.WriteLine("CVID");
+            Console.WriteLine("Length:" + cvid.Length);
+            Console.WriteLine("首位：" + cvid[0]);
+            
+            if (Rbtn_R1.IsChecked == true)
+            {
+                ChouQian_Auto();
+            }
+            else if (Rbtn_R2.IsChecked == true)
+            {
+                ChouQian_Manual();
+            }
+            else
+            {
+
+            }
+        }
+
+        private void MWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            try
+            {
+                timer1.Stop();
+                timer1.Enabled = false;
+            }
+            catch
+            {
+
+            }
+
+        }
+
+        private void Btn_Cancle_Click(object sender, RoutedEventArgs e)
+        {
+            StopMualTask("[手动模式] 已终止Task", "已终止！");
+        }
+
+        private void Btn_ScvLeft_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                Sve_M_s1.ScrollToHorizontalOffsetWithAnimation(Sve_M_s1.HorizontalOffset - 155);
+            }));
+        }
+
+        private void Btn_ScvRight_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(new Action(() =>
+            {
+                Sve_M_s1.ScrollToHorizontalOffsetWithAnimation(Sve_M_s1.HorizontalOffset + 155);
+            }));
+        }
+
+        private void Btn_Enter_Click(object sender, RoutedEventArgs e)
+        {
+            Tbcl.SelectedIndex = 2;
+        }
+
+        private void Btn_BacktoM_Click(object sender, RoutedEventArgs e)
+        {
+            Tbcl.SelectedIndex = 1;
+        }
+
+        private void Btn_M_BacktoPG_Click(object sender, RoutedEventArgs e)
+        {
+            Tbcl.SelectedIndex = 2;
+        }
+
+        /// <summary>
+        /// 按钮组选择 自动模式 的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Rbtn_R1_Click_1(object sender, RoutedEventArgs e)
+        {
+            Nud_n2.IsEnabled = false;
+            BtnG_2.IsEnabled = false;
+
+            Cbx_sf.IsEnabled = true;
+        }
+        /// <summary>
+        /// 按钮组选择 手动模式 的事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void Rbtn_R2_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (Cbx_cqgt.SelectedIndex == 0)
+            {
+                BtnG_2.IsEnabled = true;
+            }
+            Nud_n2.IsEnabled = true;
+            
+
+            Cbx_sf.IsEnabled = false;
+        }
+
+        private void Cbx_cqgt_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (IsLoaded == false)
+            {
+                //如果界面没加载完就不触发，防止在 Init 结束之前操作控件
+                return;
+            }
+            if (Cbx_cqgt.SelectedIndex == 0)
+            {
+                Nud_stid.IsEnabled = true;
+                Nud_endid.IsEnabled = true;
+                Nud_n1.Maximum = root.students.Count;
+                BtnG_2.IsEnabled = true;
+            }
+            else if (Cbx_cqgt.SelectedIndex == 1)
+            {
+                Nud_stid.IsEnabled = false;
+                Nud_endid.IsEnabled = false;
+                Nud_n1.Maximum = boys.Count;
+                BtnG_2.IsEnabled = false;
+                Rbtn_R3.IsChecked = true;
+                
+            }
+            else if (Cbx_cqgt.SelectedIndex == 2)
+            {
+                Nud_stid.IsEnabled = false;
+                Nud_endid.IsEnabled = false;
+                Nud_n1.Maximum = girls.Count;
+                BtnG_2.IsEnabled = false;
+                Rbtn_R3.IsChecked = true;
+
+            }
+        }
+
+        private void MWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            timer1.Interval = 13;
+            timer1.Enabled = false;
+            timer1.Elapsed += XHNum;
+            timer_xh.Interval = 13;
+            timer_xh.Enabled = false;
+            timer_xh.Elapsed += XHName;
+            timer_start.Interval = 1000;
+            timer_start.Enabled = true;
+            timer_start.Elapsed += ST;
+            timer_start.Start();
+            
+            _ = Task.Run(new Action(() =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    
+                    string str;
+                    try
+                    {
+                        //加载学号表
+                        str = File.ReadAllText(@"D:\ChiyoS\Data\students.json");
+                        root = JsonConvert.DeserializeObject<Root>(str);
+                        
+                    }
+                    catch (Exception ex)
+                    {
+                        timer_start.Stop();
+                        timer_start.Enabled = false;
+                        Growl.Error("加载Json数据失败！");
+
+                        Btn_DrawS.IsEnabled = false;
+                        Btn_BacktoM.IsEnabled = false;
+                        Btn_Enter.IsEnabled = true;
+                        Btn_Enter.Visibility = Visibility.Visible;
+                        Tbk_pz_Info.Visibility = Visibility.Visible;
+
+                        Tbk_wel.Text = "少女祈祷失败";
+                        Tbk_wel2.Text = "加载Json数据失败！";
+                        Pgb_wel.Visibility = Visibility.Hidden;
+                        HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
+                        return;
+                    }
+                    
+                    Nud_n1.Maximum = root.students.Count;
+                    Nud_endid.Maximum = root.students.Count;
+                    try
+                    {
+                        foreach (Students itm in root.students)
+                        {
+                            Everyone.Add(itm.name);
+                            if (itm.s == "b")
+                            {
+                                boys.Add(itm.name);
+                            }
+                            else
+                            {
+                                girls.Add(itm.name);
+                            }
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    Browser.Load("file:///D:ChiyoS/source/bg.html");
+                    // MDE.Source = new Uri(@"D:\ChiyoS\source\audio\[和泉纱雾]欢迎回来，哥哥！.mp3", UriKind.Absolute);
+
+                    //Growl.Success("少女祈祷成功！");
+                    Growl.Info("当前载入 " + root.title);
+                    Title = "ChiyoS.Draw.Komari|VERSION:2.2 x64|当前载入配置文件:" + root.title;
+
+                }));
+            }));
+        }
+
+        
+
+        private void Btn_M_Restart_Click(object sender, RoutedEventArgs e)
+        {
+            Btn_DrawS_Click(sender,e);
+        }
+    }
+}
