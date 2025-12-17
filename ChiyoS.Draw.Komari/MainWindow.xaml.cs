@@ -37,6 +37,8 @@ namespace ChiyoS.Draw.Komari
         ArrayList boys = new ArrayList();
         ArrayList girls = new ArrayList();
         ArrayList seletlist = new ArrayList();
+
+        CQAnimation cqa = new CQAnimation();
         public MainWindow()
         {
             InitializeComponent();          
@@ -104,9 +106,18 @@ namespace ChiyoS.Draw.Komari
 
                     Console.WriteLine("---[自动模式] 生成的随机数---");
                     Console.WriteLine(string.Join("\n", arr));
-
+                    
                     try
                     {
+                        Task.Run(() =>
+                        {
+                            this.Dispatcher.Invoke(new Action(() =>
+                            {
+                                cqa.Show();
+                                cqa.SetName(Getname(arr, Cbx_sf.SelectedIndex));
+                            }));
+                        });
+                        
                         AddCh(arr,Cbx_cqgt.SelectedIndex);
                         Tbk_M_Text.Text = "抽取完成";
                         Tbk_M_Info.Text = "[自动模式] 任务结束";
@@ -323,7 +334,7 @@ namespace ChiyoS.Draw.Komari
                 }
                 if (gt >= Nud_n1.Value)
                 {
-                    StopMualTask("[手动模式] 抽取完成!", "抽取完成");
+                    StopMualTask("[手动模式] 抽取完成!（如果上方有名字请忽略）", "抽取完成");
                 }
             }
             else if(Rbtn_R3.IsChecked == true)
@@ -337,8 +348,8 @@ namespace ChiyoS.Draw.Komari
                         if(czgt == sr)
                         {
                             Growl.Warning("抽取TARGET有重复，已舍弃！\n请继续抽取！");
-                            Console.WriteLine("[TARGET {0}  重复][执行操作：舍弃]", czgt);
-                            Tbk_M_Info.Text = string.Format("[TARGET{0}号  已重复] 程序已将此操作结果撤销，请继续！", czgt);
+                            Console.WriteLine("[TARGET {0}同学已在列表][执行操作：舍弃]", czgt);
+                            Tbk_M_Info.Text = string.Format("[TARGET{0}同学已在列表] 程序已将此操作结果撤销，请继续！", czgt);
                             return;
                         }
                     }
@@ -351,7 +362,7 @@ namespace ChiyoS.Draw.Komari
                 }
                 if(gt2>= Nud_n1.Value)
                 {
-                    StopMualTask("[手动模式] 抽取完成!", "抽取完成");
+                    StopMualTask("[手动模式] 抽取完成!（如果上方有名字请忽略）", "抽取完成");
                 }
             }
         }
@@ -570,7 +581,37 @@ namespace ChiyoS.Draw.Komari
             }));
         }
 
-        
+        private ArrayList Getname(int[] nm,int tid)
+        {
+            ArrayList names = new ArrayList();
+            if (tid == 0)
+            {
+                foreach (int id in nm)
+                {
+                    names.Add(root.students[id - 1].name);
+                }
+                return names;
+            }
+            else if (tid == 1)
+            {
+                foreach (int id in nm)
+                {
+                    names.Add(boys[id-1].ToString());
+                }
+                return names;
+            }
+            else if (tid == 2)
+            {
+                foreach (int id in nm)
+                {
+                    names.Add(girls[id - 1].ToString());
+                }
+                return names;
+            }
+            return names;
+
+
+        }
         
 
         private void Btn_M_Restart_Click(object sender, RoutedEventArgs e)
