@@ -221,7 +221,7 @@ namespace ChiyoS.Draw.Komari
         }
 
 
-        private void ST(object sender, ElapsedEventArgs e)
+        private void StartDelay(object sender, ElapsedEventArgs e)
         {
             if (stid == 4)
             {
@@ -335,7 +335,7 @@ namespace ChiyoS.Draw.Komari
                             return;
                         }
                     }
-                    Console.WriteLine("[未重复]");
+                    Console.WriteLine("[PASS]");
                     Tbk_RST_Info.Text = string.Format("[未重复] 请继续，还剩 {0} 个", Nud_cqrs.Value - gt - 1);
                     al.Add(s1);
                     int[] ar = new int[] { s1 };
@@ -345,7 +345,9 @@ namespace ChiyoS.Draw.Komari
                 }
                 if (gt >= Nud_cqrs.Value)
                 {
+                    isCanxh = false;
                     StopMualTask("[手动模式] 抽取完成!(如果上方有学号请忽略)", "抽取完成");
+                    
                 }
             }
             else if(Rbtn_GDMZ.IsChecked == true)
@@ -373,7 +375,7 @@ namespace ChiyoS.Draw.Komari
                             return;
                         }
                     }
-                    Console.WriteLine("[未重复]");
+                    Console.WriteLine("[PASS]");
                     Tbk_RST_Info.Text = string.Format("[TARGET未重复] 请继续，还剩 {0} 个", Nud_cqrs.Value - gt2 - 1);
                     al.Add(czgt);
                     int[] ar = new int[] { czgtid };
@@ -382,7 +384,9 @@ namespace ChiyoS.Draw.Komari
                 }
                 if(gt2>= Nud_cqrs.Value)
                 {
+                    isCanxh = false;
                     StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
+                    
                 }
             }
         }
@@ -421,6 +425,7 @@ namespace ChiyoS.Draw.Komari
             }
             else if (Rbtn_RManual.IsChecked == true)
             {
+                isCanxh = true;
                 ChouQian_Manual();
             }
         }
@@ -463,12 +468,9 @@ namespace ChiyoS.Draw.Komari
             Btn_Enter.IsEnabled = false;
             Storyboard storyboard = (FindResource("Entermp") as Storyboard);
             Storyboard storyboard2 = (FindResource("Entermp2") as Storyboard);
-            storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 1; storyboard2.Begin(Gd_PZ); };
-
-
-            //storyboard2.Completed += (o, a) => { Tbcl.SelectedIndex = 1; };
+            storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 1; storyboard2.Begin(Gd_PZ); };//去配置页//
             storyboard.Begin();
-            //去配置页
+            
         }
 
         private void Btn_PZ_ToRST_Click(object sender, RoutedEventArgs e)
@@ -494,7 +496,6 @@ namespace ChiyoS.Draw.Komari
             if (vr == MessageBoxResult.Yes) // 如果是确定，就执行下面代码
             {
                 Rbtn_RManual.IsChecked = true;
-                
             }
             else
             {
@@ -560,7 +561,7 @@ namespace ChiyoS.Draw.Komari
             timer_xh.Elapsed += XHName;
             timer_start.Interval = 1000;
             timer_start.Enabled = true;
-            timer_start.Elapsed += ST;
+            timer_start.Elapsed += StartDelay;
             timer_start.Start();
             _ = Task.Run(new Action(() =>
             {
@@ -621,11 +622,11 @@ namespace ChiyoS.Draw.Komari
                     }
                     catch
                     {
-                        Growl.Warning("背景轮换列表JSON文件加载失败");
+                        Growl.Warning("背景轮换列表bg.json加载失败");
                     }
-                    //Growl.Success("少女祈祷成功！");
+                    
                     Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.6.0.0_Standard|当前载入配置文件:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.6.0.0|当前载入配置文件:" + root.title;
                 }));
             }));
         }
@@ -660,18 +661,12 @@ namespace ChiyoS.Draw.Komari
                     }
                     Tbk_wel_bgif.Text = root_bg.list[bgid].text;
                     Tbk_PZ_bgif.Text = root_bg.list[bgid].text;
-                    if (root_bg.list[bgid].color == "Black")
-                    {
-                        Tbk_RST_Count.Foreground = new SolidColorBrush(Colors.Black);
-                        Tbk_RST_Info.Foreground = new SolidColorBrush(Colors.Black);
-                        Tbk_RST_Text.Foreground = new SolidColorBrush(Colors.Black);
-                    }
-                    else
-                    {
-                        Tbk_RST_Count.Foreground = new SolidColorBrush(Colors.White);
-                        Tbk_RST_Info.Foreground = new SolidColorBrush(Colors.White);
-                        Tbk_RST_Text.Foreground = new SolidColorBrush(Colors.White);
-                    }
+                    var col = new SolidColorBrush((Color)ColorConverter.ConvertFromString(root_bg.list[bgid].color));
+
+                    Tbk_RST_Count.Foreground = col;
+                    Tbk_RST_Info.Foreground = col;
+                    Tbk_RST_Text.Foreground = col;
+
                     if (bgid == root_bg.list.Count - 1)
                     {
                         bgid = 0;

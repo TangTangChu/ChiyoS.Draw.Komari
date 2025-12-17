@@ -48,7 +48,7 @@
                         <RadioButton x:Name="Rbtn_RAuto" Content="&#xE634; 自动抽取" Click="Rbtn_RAuto_Click_1"  FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="20" Height="36"/>
                     </hc:ButtonGroup>
                     <hc:NumericUpDown x:Name="Nud_cqrs" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,288,584,284" hc:TitleElement.Title="抽取人数" hc:TitleElement.Foreground="White" hc:TitleElement.TitlePlacement="Left"  Style="{StaticResource NumericUpDownExtend}" FontSize="14" Foreground="Black"/>
-                    <hc:NumericUpDown x:Name="Nud_interval" Value="13" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="573,290,397,286" FontSize="14"/>
+                    <hc:NumericUpDown x:Name="Nud_interval" Value="45" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="573,290,397,286" FontSize="14"/>
 
                     <hc:NumericUpDown x:Name="Nud_stid" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,364,584,208" hc:TitleElement.Title="起始学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
                     <hc:NumericUpDown x:Name="Nud_endid" Value="55" Height="35" Maximum="55" Minimum="1" Margin="573,366,399,210" hc:TitleElement.Title="终止学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
@@ -95,8 +95,8 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="Black"/>
-                    <TextBlock x:Name="Tbk_RST_Count" Text="" Height="30" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="Black" />
+                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="Black" Opacity="0.84"/>
+                    <TextBlock x:Name="Tbk_RST_Count" Text="" Height="30" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="Black" Opacity="0.7" />
                     <Button x:Name="Btn_RST_Cancle" Content="&#xe653; 取消" Click="Btn_RST_Cancle_Click" Style="{DynamicResource ButtonDanger}" IsEnabled="False" Width="100" Height="30" Margin="986,291,0,0" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -128,7 +128,7 @@
 
                         </StackPanel>
                     </hc:ScrollViewer>
-                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="提示" TextAlignment="Center" FontSize="30" Foreground="Black"/>
+                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="提示" TextAlignment="Center" FontSize="30" Foreground="Black" Opacity="0.7"/>
                 </Grid>
             </TabItem>
 
