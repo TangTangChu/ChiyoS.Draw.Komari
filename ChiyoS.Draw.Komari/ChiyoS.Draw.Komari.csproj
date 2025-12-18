@@ -70,11 +70,20 @@
     <Compile Include="Json_bg.cs" />
     <Compile Include="Random.cs" />
     <Compile Include="Random2.cs" />
-    <Compile Include="UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
+    <Compile Include="ResultC_Pink.xaml.cs">
+      <DependentUpon>ResultC_Pink.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControl2.xaml.cs">
-      <DependentUpon>UserControl2.xaml</DependentUpon>
+    <Compile Include="ResultC_Blue.xaml.cs">
+      <DependentUpon>ResultC_Blue.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResultC_PraviteQT.xaml.cs">
+      <DependentUpon>ResultC_PraviteQT.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SDEItem.xaml.cs">
+      <DependentUpon>SDEItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StudentsDataEditor.xaml.cs">
+      <DependentUpon>StudentsDataEditor.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -88,11 +97,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="UserControl1.xaml">
+    <Page Include="ResultC_Pink.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControl2.xaml">
+    <Page Include="ResultC_Blue.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResultC_PraviteQT.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SDEItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StudentsDataEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -128,16 +149,19 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="52793674_p0_暖かい友達.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="107908375_p0_菫時.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="65750322_p0_ふうこ.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="fuuko.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="b2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="115826130_p1_星萤.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="no title_115887010-cover.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

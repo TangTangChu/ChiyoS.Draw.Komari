@@ -9,17 +9,22 @@
            
            x:Name="MWindow"
         Title="ChiyoS.Draw.Komari" Height="640" Width="1126.5" Loaded="MWindow_Loaded" ResizeMode="CanMinimize" Closing="MWindow_Closing" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Icon="/65750322_p0_ふうこ.png" Background="{x:Null}">
-    <Grid>
+    <hc:Window.NonClientAreaContent>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button x:Name="Btn_SDE" Content="编辑学号表" Click="Btn_SDE_Click" BorderBrush="{x:Null}" Foreground="#FFE50FB8"/>
+        </StackPanel>
+    </hc:Window.NonClientAreaContent>
+        <Grid>
 
-        <Image x:Name="Img_bg1" Source="/107908375_p0_菫時.jpg" Stretch="UniformToFill"/>
+        <Image x:Name="Img_bg1" Source="115826130_p1_星萤.jpg" Stretch="UniformToFill"/>
         <Image x:Name="Img_bg2" Stretch="UniformToFill" Opacity="0"/>
 
         <TabControl x:Name="Tbcl" Background="{x:Null}">
             <TabItem Visibility="Collapsed">
             </TabItem>
             <TabItem Visibility="Collapsed" IsSelected="True">
-                <Grid Height="612">
-                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontWeight="Bold" FontSize="100" Margin="0,221,0,269" Foreground="Black"/>
+                <Grid >
+                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontWeight="Bold" FontSize="100" Margin="0,270,0,220.2" Foreground="White" Opacity="0.75"/>
                     <Button x:Name="Btn_Enter" Click="Btn_Enter_Click" Content="进入"  Margin="491,353,479,100" Height="70" Visibility="Hidden" Width="240" Style="{StaticResource ButtonSuccess}" FontSize="30">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -28,9 +33,9 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True" Margin="188,348,188,260" Foreground="#FFFD3792"/>
-                    <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontWeight="Medium" FontSize="24" TextAlignment="Center" Margin="388,357,388,220" Foreground="Black"/>
-                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="726,558,0,0" FontStyle="Italic"  TextAlignment="Right" Text="菫時" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="#FF8A7F7F"/>
+                    <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True" Margin="200,372,170,203.2" Foreground="#FFFD3792"/>
+                    <TextBlock x:Name="Tbk_wel2" Height="35" Text="正在做一些必要的准备，请稍后" FontWeight="Medium" FontSize="24" TextAlignment="Center" Foreground="White" Margin="0,381,0,163.2" Opacity="0.74"/>
+                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="720,547,0,-0.8" TextAlignment="Right" Text="夜色名为温柔" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="White"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
@@ -77,7 +82,7 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="726,569,0,10"  Text="菫時" FontStyle="Italic" TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="#FF8A7F7F"/>
+                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="720,547,0,-0.8"  Text="夜色名为温柔"  TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="White"/>
                     <CheckBox x:Name="Cbx_isNosquence" Content="启用乱序滚动列" IsChecked="True" IsEnabled="{Binding ElementName=Rbtn_RManual,Path=IsChecked,Mode=OneWay}" HorizontalAlignment="Left" Margin="604,406,0,0" VerticalAlignment="Top" Foreground="Black"/>
                 </Grid>
             </TabItem>
@@ -91,9 +96,9 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontWeight="ExtraBold" FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="Black" Opacity="0.78"/>
-                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="提示" FontWeight="Medium" TextAlignment="Center" FontSize="30" Foreground="Black" Opacity="0.7"/>
-                    <TextBlock x:Name="Tbk_RST_Count" Text="计数器" Height="30" FontStyle="Italic" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="Black" Opacity="0.7" />
+                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontWeight="ExtraBold" FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="White" Opacity="0.6"/>
+                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="这是信息" FontWeight="Medium" TextAlignment="Center" FontSize="30" Foreground="White" Opacity="0.7"/>
+                    <TextBlock x:Name="Tbk_RST_Count" Text="计数器" Height="30" FontStyle="Italic" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="White" Opacity="0.7" />
                     <Button x:Name="Btn_RST_Cancle" Content="&#xe653; 取消" Click="Btn_RST_Cancle_Click" Style="{DynamicResource ButtonDanger}" IsEnabled="False" Width="100" Height="30" Margin="986,291,0,0" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -119,8 +124,8 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="127" Width="40"  Click="Btn_RST_ScvLeft_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="Black" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" />
-                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="127" Width="40" Click="Btn_RST_ScvRight_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="Black" HorizontalAlignment="Left" Margin="1076,457,0,0" VerticalAlignment="Top" />
+                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="127" Width="40"  Click="Btn_RST_ScvLeft_Click"  Background="{x:Null}" FontSize="60" Foreground="White" BorderBrush="White" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" />
+                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="127" Width="40" Click="Btn_RST_ScvRight_Click"  Background="{x:Null}" FontSize="60" Foreground="White" BorderBrush="White" HorizontalAlignment="Left" Margin="1076,457,0,0" VerticalAlignment="Top" />
                     <hc:ScrollViewer x:Name="Scve_RST_s1" Height="202" Margin="66,408,66,2" Orientation="Horizontal" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
                         <StackPanel x:Name="Stp_RST_s1" Orientation="Horizontal">
 
@@ -131,13 +136,13 @@
             </TabItem>
             <TabItem Visibility="Collapsed">
                 <Grid>
-                    <hc:OutlineText x:Name="Otxt_Warn_wt" FontWeight="Bold" Text="警告：请勿间隔相同或相近时间点击抽取，否则抽中个体会被人为因素的限定在某一范围(注意，本警告页仅在动态频率与随机顺序皆未开启时显示)" TextWrapping="WrapWithOverflow" Stroke="White" Fill="Black" StrokeThickness="1" FontSize="68" Margin="0,82,0,174"/>
-                    <hc:OutlineText x:Name="Otxt_Warn_down" FontWeight="Bold" Text="倒计时" Stroke="White" Fill="#FFFF9C49" StrokeThickness="1" FontSize="68" TextAlignment="Center" Margin="0,425,0,38" />
+                    <hc:OutlineText x:Name="Otxt_Warn_wt" FontWeight="Bold" Text="警告：请勿间隔相同或相近时间点击抽取，否则抽中个体会被人为因素的限定在某一范围(注意，本警告页仅在动态频率与随机顺序皆未开启时显示)" TextWrapping="WrapWithOverflow" Stroke="White" Fill="Black" StrokeThickness="1.8" FontSize="68" Margin="0,82,0,174"/>
+                    <hc:OutlineText x:Name="Otxt_Warn_down" FontWeight="Bold" Text="倒计时" Stroke="White" Fill="#FFFF9C49" StrokeThickness="2.5" FontSize="68" TextAlignment="Center" Margin="0,425,0,38" />
                 </Grid>
             </TabItem>
 
         </TabControl>
-        <TextBlock x:Name="Tbk_flowtext" Text="Text" Height="80" TextAlignment="Center" FontSize="54" Margin="0,10,0,540" Foreground="White" Opacity="0" Background="#FFEA2653"/>
+        <TextBlock x:Name="Tbk_flowtext" Text="Text" Height="80" TextAlignment="Center" FontSize="54" Margin="0,0,0,530.4" Foreground="White" Opacity="0" Background="#FFEA2653"/>
     </Grid>
     <hc:Window.Resources>
         <Storyboard x:Key="Entermp">
@@ -147,7 +152,7 @@
             <DoubleAnimation Storyboard.TargetName="Tbk_wel_bgif" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
         </Storyboard>
         <Storyboard x:Key="Entermp2">
-            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.4"/>
+            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.7"/>
         </Storyboard>
         <Storyboard x:Key="Opacity1">
             <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:2"/>

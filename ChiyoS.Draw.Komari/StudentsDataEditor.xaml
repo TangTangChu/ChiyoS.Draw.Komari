@@ -1,0 +1,48 @@
+﻿<hc:Window x:Class="ChiyoS.Draw.Komari.StudentsDataEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:assembly="clr-namespace:System;assembly=mscorlib"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChiyoS.Draw.Komari"
+        mc:Ignorable="d" Width="340" Height="540"
+           Title="StudentDataEditor">
+    <hc:Window.Resources>
+        <ObjectDataProvider x:Key="sexEnum" MethodName="GetValues" 
+                            ObjectType="{x:Type assembly:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type Type="local:SexOpt"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </hc:Window.Resources>
+    <StackPanel >
+        <Menu Height="30">
+            <MenuItem x:Name="Mit_open" Click="Mit_open_Click" Header="打开" />
+            <MenuItem x:Name="Mit_save" Click="Mit_save_Click" Header="保存(游戏玩多了,忘记写程序了,有的功能没写)" IsEnabled="False"/>
+            
+        </Menu>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="30">
+            <Button x:Name="Btn_AddST" Content="添加" Background="#FF4BF48F" Click="Btn_AddST_Click"/>
+            <Button x:Name="Btn_DelST" Content="删除" Background="#FFFD5A5A" Click="Btn_DelST_Click"/>
+            <Button x:Name="Btn_UppenST" Content="上移" Background="#FFFF349A" Click="Btn_UppenST_Click" IsEnabled="False"/>
+            <Button x:Name="Btn_DnST" Content="下移" Background="#FFF3F442" Click="Btn_DnST_Click" IsEnabled="False"/>
+        </StackPanel>
+        <hc:TextBox x:Name="Tbx_title" Height="20" hc:TitleElement.Title="标题:" hc:TitleElement.TitlePlacement="Left" Text=""/>
+        <Grid>
+            <DataGrid x:Name="Dtg_1" Height="392" ScrollViewer.VerticalScrollBarVisibility="Visible" IsHitTestVisible="True" ItemsSource="{Binding}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    
+                    <DataGridTextColumn Header="学号" IsReadOnly="True"  Binding="{Binding SIndex,Mode=TwoWay}" CanUserSort="False"/>
+                    <DataGridTextColumn Header="姓名" Binding="{Binding Name,Mode=TwoWay}" CanUserSort="False"/>
+                    <DataGridComboBoxColumn Header="性别" SelectedItemBinding="{Binding Gender,Mode=TwoWay}" ItemsSource="{Binding Source={StaticResource sexEnum}}" CanUserSort="False"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <StatusBar>
+            <Grid>
+                <TextBlock x:Name="Tbk_filepath" Text="Json文件路径:" hc:TextBlockAttach.AutoTooltip="True" Foreground="#FFF07FD4" />
+            </Grid>
+        </StatusBar>
+    </StackPanel>
+</hc:Window>

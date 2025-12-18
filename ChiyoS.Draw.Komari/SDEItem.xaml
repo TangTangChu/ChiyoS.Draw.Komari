@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="ChiyoS.Draw.Komari.SDEItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChiyoS.Draw.Komari"
+             mc:Ignorable="d" 
+             xmlns:hc="https://handyorg.github.io/handycontrol"
+             Height="35" Width="240">
+    <StackPanel x:Name="Stp_1" Orientation="Horizontal">
+        <TextBlock x:Name="Tbk_index" Text="##" Width="15" FontSize="14" Foreground="#FF6C6C6C" TextAlignment="Center" Height="20"/>
+        <TextBox x:Name="Tbx_name" Text="" hc:InfoElement.Placeholder="请键入姓名" Width="90" Background="{x:Null}" />
+        <ComboBox x:Name="Cbx_Gender" SelectedIndex="0" Width="74" Background="{x:Null}">
+            <ComboBoxItem Content="男生"/>
+            <ComboBoxItem Content="女生"/>
+        </ComboBox>
+        <Button Content="图标" BorderBrush="Black" Background="White" Foreground="#FFF4F62D"/>
+    </StackPanel>
+</UserControl>

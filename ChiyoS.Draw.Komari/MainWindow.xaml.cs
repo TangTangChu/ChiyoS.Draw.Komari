@@ -27,29 +27,29 @@ namespace ChiyoS.Draw.Komari
         Root_bg root_bg = new Root_bg();
         System.Timers.Timer timer1 = new System.Timers.Timer();
         System.Timers.Timer timer_start = new System.Timers.Timer();
-        System.Timers.Timer timer_xh = new System.Timers.Timer();
+        System.Timers.Timer timer_loop = new System.Timers.Timer();
         System.Timers.Timer timer_bggd = new System.Timers.Timer();
         System.Timers.Timer timer_showwarn = new System.Timers.Timer();
         System.Timers.Timer timer_dynafreq = new System.Timers.Timer();
-        int stid = 0;
+        int delaylast = 0;
         int xhn = 0;
         int gt = 0;
         int xhn2 = 0;
         int gt2 = 0;
         int bgidz = 0;
         int bgid = 0;
-        int wshow = 4;
+        int wrshowlast = 4;
         int dfreq = 0;
         int startid = 1;
         int endid = 55;
         int[] dfreqs;
-        bool isCanxh = false;
+        bool isCanLoop = false;
 
         ArrayList al = new ArrayList();
         ArrayList Everyone = new ArrayList();
         ArrayList boys = new ArrayList();
         ArrayList girls = new ArrayList();
-        ArrayList seletlist = new ArrayList();
+        ArrayList seletedlist = new ArrayList();
         public MainWindow()
         {
             InitializeComponent();          
@@ -59,13 +59,13 @@ namespace ChiyoS.Draw.Komari
         {
             timer1.Interval = 13;
             timer1.Enabled = false;
-            timer1.Elapsed += XHNum;
-            timer_xh.Interval = 13;
-            timer_xh.Enabled = false;
-            timer_xh.Elapsed += XHName;
+            timer1.Elapsed += LoopNum;
+            timer_loop.Interval = 13;
+            timer_loop.Enabled = false;
+            timer_loop.Elapsed += LoopName;
             timer_showwarn.Interval = 1000;
             timer_showwarn.Enabled = false;
-            timer_showwarn.Elapsed += Showwarn;
+            timer_showwarn.Elapsed += Showwarning;
             timer_start.Interval = 1000;
             timer_start.Enabled = true;
             timer_start.Elapsed += StartDelay;
@@ -121,6 +121,7 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
+                    //背景轮换
                     /**
                     try
                     {
@@ -137,13 +138,14 @@ namespace ChiyoS.Draw.Komari
                     }
                     **/
                     Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.9|当前载入配置文件:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.9.2|夜色名为温柔|数据集:" + root.title;
                 }));
             }));
         }
         private void StartDelay(object sender, ElapsedEventArgs e)
         {
-            if (stid == 2)
+            //把开屏动画时间延长些，方便展示私货
+            if (delaylast == 2)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -158,7 +160,7 @@ namespace ChiyoS.Draw.Komari
             }
             else
             {
-                stid++;
+                delaylast++;
             }
         }
         /// <summary>
@@ -259,7 +261,7 @@ namespace ChiyoS.Draw.Komari
                 Dispatcher.Invoke(() =>
                 {
                     
-                    isCanxh = true;//Unlock
+                    isCanLoop = true;//Unlock
                     Nud_cqrs.IsEnabled = false;
                     BtnG.IsEnabled = false;
                     Nud_interval.IsEnabled = false;
@@ -285,31 +287,31 @@ namespace ChiyoS.Draw.Komari
                             {
                                 ArrayList tmp_arl = new ArrayList();
                                 tmp_arl = Getname(randomF2.GenerateUniqueRandom(1, root.students.Count, root.students.Count), 0);
-                                seletlist = tmp_arl;         
+                                seletedlist = tmp_arl;         
                                 Showflowtext("乱序滚动列已启用");
                             }
                             else
                             {
-                                seletlist = Everyone;
+                                seletedlist = Everyone;
                             }
                             startid = (int)Nud_stid.Value;
                             endid = (int)Nud_endid.Value;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 1)
                         {
-                            seletlist = boys;
+                            seletedlist = boys;
                             startid = 1;
                             endid = boys.Count;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 2)
                         {
-                            seletlist = girls;
+                            seletedlist = girls;
                             startid = 1;
                             endid = girls.Count;
                         }
-                        timer_xh.Enabled = true;
-                        timer_xh.Interval = Nud_interval.Value;
-                        timer_xh.Start();                       
+                        timer_loop.Enabled = true;
+                        timer_loop.Interval = Nud_interval.Value;
+                        timer_loop.Start();                       
                     }
                     else
                     {
@@ -322,6 +324,7 @@ namespace ChiyoS.Draw.Komari
                     }
                     if (Cbx_DynamicFrequency.IsChecked == true)
                     {
+                        //开启动态频率
                         timer_dynafreq.Enabled = true;
                         dfreqs = randomF2.GenerateUniqueRandom(24, 45, 20);
                         timer_dynafreq.Enabled = true;
@@ -334,40 +337,40 @@ namespace ChiyoS.Draw.Komari
                 });
             });
         }
-        private void XHName(object sender, ElapsedEventArgs e)
+        private void LoopName(object sender, ElapsedEventArgs e)
         {
-            if(isCanxh == false)
+            if(isCanLoop == false)
             {
                 return;
             }
             Dispatcher.Invoke(new Action(() =>
             {
-                isCanxh = false;
+                isCanLoop = false;
                 if (xhn2 <= endid)
                 {
-                    Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
+                    Tbk_RST_Text.Text = seletedlist[xhn2-1].ToString();
                     xhn2++;
                 }
                 else
                 {
                     xhn2 = startid;
-                    Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
+                    Tbk_RST_Text.Text = seletedlist[xhn2-1].ToString();
                 }
-                isCanxh = true;
+                isCanLoop = true;
             }));
         }
 
 
         
-            private void XHNum(object sender, ElapsedEventArgs e)
+            private void LoopNum(object sender, ElapsedEventArgs e)
         {
-            if (isCanxh == false)
+            if (isCanLoop == false)
             {
                 return;
             }
             Dispatcher.Invoke(new Action(() =>
             {
-                isCanxh = false;
+                isCanLoop = false;
                 if (xhn <= (int)Nud_endid.Value)
                 {
                     Tbk_RST_Text.Text = xhn.ToString();
@@ -378,7 +381,7 @@ namespace ChiyoS.Draw.Komari
                     xhn = (int)Nud_stid.Value;
                     Tbk_RST_Text.Text = xhn.ToString();
                 }
-                isCanxh = true;
+                isCanLoop = true;
             }));
 
         }
@@ -386,46 +389,62 @@ namespace ChiyoS.Draw.Komari
         /// 呈现被抽中的同学
         /// </summary>
         /// <param name="arr">学号列表</param>
-        /// <param name="mode">模式</param>
-        private void AddCh(int[] arr,int mode)
+        /// <param name="type">类型，0表示全体，此时程序会自己判断性别；1表示都为男生，2表示都为女生</param>
+        private void AddCh(int[] arr,int type)
         {
             Dispatcher.Invoke(new Action(() =>
             {
-                if (mode == 0)
+                if (type == 0)
                 {
                     for (int i = 0; i < arr.Length; i++)
                     {
                         if (root.students[arr[i] - 1].s == "b")
                         {
-                            Stp_RST_s1.Children.Add(new UserControl2(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
+                            if(root.students[arr[i] - 1].name == "邱挺")
+                            {
+                                Stp_RST_s1.Children.Add(new ResultC_PraviteQT(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
+                            }
+                            else
+                            {
+                                Stp_RST_s1.Children.Add(new ResultC_Blue(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
+                            }
                         }
                         else
                         {
-                            Stp_RST_s1.Children.Add(new UserControl1(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
-                        }
-                        Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
+                            Stp_RST_s1.Children.Add(new ResultC_Pink(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
+                        } 
                         double d = Scve_RST_s1.ActualWidth;
                         Scve_RST_s1.ScrollToHorizontalOffset(d);
-                    }               
+                    }
+                    Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
                 }
-                else if (mode == 1)
+                else if (type == 1)
                 {
                     for(int i = 0; i < arr.Length; i++)
                     {
-                        Stp_RST_s1.Children.Add(new UserControl2("", boys[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
+                        //展示私货用，抽中我就用另外一个有头像的控件
+                        if(boys[arr[i] - 1].ToString() == "邱挺")
+                        {
+                            Stp_RST_s1.Children.Add(new ResultC_PraviteQT("", boys[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
+                        }
+                        else
+                        {
+                            Stp_RST_s1.Children.Add(new ResultC_Blue("", boys[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
+                        }
+                        
                     }
                 }
-                else if(mode == 2)
+                else if(type == 2)
                 {
                     for (int i = 0; i < arr.Length; i++)
                     {
-                        Stp_RST_s1.Children.Add(new UserControl1("", girls[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
+                        Stp_RST_s1.Children.Add(new ResultC_Pink("", girls[arr[i] - 1].ToString(), (Stp_RST_s1.Children.Count + 1).ToString()));
                     }
                 }
             }));
         }
 
-        private void Btn_RST_cq_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Btn_RST_cq_Click(object sender, RoutedEventArgs e)
         {
             if (Rbtn_GDXH.IsChecked == true)
             {
@@ -455,12 +474,13 @@ namespace ChiyoS.Draw.Komari
                     al.Add(s1);
                     int[] ar = new int[] { s1 };
                     AddCh(ar, 0);
+                    
                     gt++;
 
                 }
                 if (gt >= Nud_cqrs.Value)
                 {
-                    isCanxh = false;
+                    isCanLoop = false;
                     timer_dynafreq.Stop();
                     StopMualTask("[手动模式] 抽取完成!(如果上方有学号请忽略)", "抽取完成");
                     
@@ -500,7 +520,7 @@ namespace ChiyoS.Draw.Komari
                 }
                 if(gt2>= Nud_cqrs.Value)
                 {
-                    isCanxh = false;
+                    isCanLoop = false;
                     timer_dynafreq.Stop();
                     StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
                     
@@ -510,7 +530,7 @@ namespace ChiyoS.Draw.Komari
 
         private void StopMualTask(string Infotext, string TText)
         {
-            isCanxh = false;
+            isCanLoop = false;
             if(Rbtn_GDXH.IsChecked == true)
             {
                 timer1.Stop();
@@ -518,8 +538,8 @@ namespace ChiyoS.Draw.Komari
             }
             else
             {
-                timer_xh.Stop();
-                timer_xh.Enabled = false;
+                timer_loop.Stop();
+                timer_loop.Enabled = false;
             }
             if(Cbx_DynamicFrequency.IsChecked== true)
             {
@@ -549,11 +569,12 @@ namespace ChiyoS.Draw.Komari
                 { 
                     if (Cbx_cqgt_all.IsSelected != true) 
                     { 
+                        //男生女生学号分散排的
                         Growl.Warning("滚动学号模式下只能抽取全部个体！"); 
                         return; 
                     }
                 }
-                isCanxh = true;
+                isCanLoop = true;
                 if (Cbx_isNosquence.IsChecked == false && Cbx_DynamicFrequency.IsChecked == false)
                 {
                     Tbcl.SelectedIndex = 4;
@@ -606,8 +627,8 @@ namespace ChiyoS.Draw.Komari
         private void Btn_Enter_Click(object sender, RoutedEventArgs e)
         {
             Btn_Enter.IsEnabled = false;
-            Storyboard storyboard = (FindResource("Entermp") as Storyboard);
-            Storyboard storyboard2 = (FindResource("Entermp2") as Storyboard);
+            Storyboard storyboard = FindResource("Entermp") as Storyboard;
+            Storyboard storyboard2 = FindResource("Entermp2") as Storyboard;
             storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 2; storyboard2.Begin(Gd_PZ); };//去配置页//
             storyboard.Begin();
             
@@ -627,9 +648,7 @@ namespace ChiyoS.Draw.Komari
 
         /// <summary>
         /// 按钮组选择 自动模式 的事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// </summary>  
         private void Rbtn_RAuto_Click_1(object sender, RoutedEventArgs e)
         {
             MessageBoxResult vr = HandyControl.Controls.MessageBox.Show("自动模式下的概率并不平均哦，是否切换为手动模式？", "不推荐的操作", MessageBoxButton.YesNo, MessageBoxImage.Question);
@@ -689,17 +708,17 @@ namespace ChiyoS.Draw.Komari
         }
         **/
         
-        private void Showwarn(object sender, ElapsedEventArgs e)
+        private void Showwarning(object sender, ElapsedEventArgs e)
         {
             try
             {
                 
                 Dispatcher.Invoke(new Action(() =>
                 {
-                    if (wshow >= 0)
+                    if (wrshowlast >= 0)
                     {
-                        Otxt_Warn_down.Text = wshow.ToString();
-                        wshow--;
+                        Otxt_Warn_down.Text = wrshowlast.ToString();
+                        wrshowlast--;
                     }
                     else
                     {
@@ -731,7 +750,7 @@ namespace ChiyoS.Draw.Komari
                         {                           
                             Img_bg2.Source = new BitmapImage(new Uri(root_bg.list[bgid].path));
                         }
-                        Storyboard Stbd_Opacity1 = (FindResource("Opacity1") as Storyboard);
+                        Storyboard Stbd_Opacity1 = FindResource("Opacity1") as Storyboard;
                         //Stbd_Opacity4.Completed += (o, a) => {Stbd_Opacity3.Begin(Tbk_bgif) };          
                         Stbd_Opacity1.Begin(Img_bg2);
                     }
@@ -791,7 +810,7 @@ namespace ChiyoS.Draw.Komari
             {
                 if (Rbtn_GDMZ.IsChecked == true)
                 {
-                    timer_xh.Interval = dfreqs[dfreq];
+                    timer_loop.Interval = dfreqs[dfreq];
                 }
                 else
                 {
@@ -838,8 +857,8 @@ namespace ChiyoS.Draw.Komari
                 Dispatcher.Invoke(new Action(() =>
                 {
                     Tbk_flowtext.Text = txt;
-                    Storyboard storyboard = (FindResource("Opacity1") as Storyboard);
-                    Storyboard storyboard2 = (FindResource("Opacity2") as Storyboard);
+                    Storyboard storyboard = FindResource("Opacity1") as Storyboard;
+                    Storyboard storyboard2 = FindResource("Opacity2") as Storyboard;
                     storyboard.Completed += (o, a) => { storyboard2.Begin(Tbk_flowtext); };
                     storyboard.Begin(Tbk_flowtext);
                 }));
@@ -849,6 +868,12 @@ namespace ChiyoS.Draw.Komari
         private void Btn_RST_Restart_Click(object sender, RoutedEventArgs e)
         {
             Btn_PZ_DrawS_Click(sender, e);
+        }
+
+        private void Btn_SDE_Click(object sender, RoutedEventArgs e)
+        {
+            StudentsDataEditor SDE = new StudentsDataEditor(@"D:\ChiyoS\Data\students.json");
+            SDE.Show();
         }
     }
 }
