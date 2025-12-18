@@ -119,6 +119,7 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
+                    /**
                     try
                     {
                         str = File.ReadAllText(@"D:\ChiyoS\Data\bg.json");
@@ -132,9 +133,9 @@ namespace ChiyoS.Draw.Komari
                     {
                         Growl.Warning("背景轮换列表bg.json加载失败");
                     }
-
+                    **/
                     Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.7.0.0|当前载入配置文件:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.8.0.0|当前载入配置文件:" + root.title;
                 }));
             }));
         }
@@ -250,9 +251,16 @@ namespace ChiyoS.Draw.Komari
                     Btn_RST_cq.Visibility = Visibility.Visible;
                     Btn_RST_cq.IsEnabled = true;
                     Btn_RST_Cancle.IsEnabled = true;
+
+                    if (Cbx_DynamicFrequency.IsChecked == true)
+                    {
+                        timer_dynafreq.Enabled = true;
+                    }
+                    else
+                    {
+                        timer_dynafreq.Enabled = false;
+                    }
                     
-                    
-                    timer_dynafreq.Enabled = true;
                     Tbk_RST_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_cqrs.Value);
                     if (Rbtn_GDMZ.IsChecked==true)
                     {
@@ -260,7 +268,18 @@ namespace ChiyoS.Draw.Komari
                         gt2 = 0;
                         if(Cbx_cqgt.SelectedIndex == 0)
                         {
-                            seletlist = Everyone;
+                            if (Cbx_isNosquence.IsChecked == true)
+                            {
+                                ArrayList tmp_arl = new ArrayList();
+                                tmp_arl = Getname(randomF2.GenerateUniqueRandom(1, root.students.Count, root.students.Count), 0);
+                                seletlist = tmp_arl;
+                                Showflowtext("随机顺序已开启");
+                            }
+                            else
+                            {
+                                seletlist = Everyone;
+                            }
+                            
                         }
                         else if (Cbx_cqgt.SelectedIndex == 1)
                         {
@@ -317,7 +336,7 @@ namespace ChiyoS.Draw.Komari
 
         private void StartDelay(object sender, ElapsedEventArgs e)
         {
-            if (stid == 1)
+            if (stid == 3)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -522,10 +541,19 @@ namespace ChiyoS.Draw.Komari
             else if (Rbtn_RManual.IsChecked == true)
             {
                 isCanxh = true;
-                Tbcl.SelectedIndex = 4;
-                timer_showwarn.Enabled = true;
-                timer_showwarn.Start();
-                ChouQian_Manual();
+                if (Cbx_isNosquence.IsChecked == false && Cbx_DynamicFrequency.IsChecked == false)
+                {
+                    Tbcl.SelectedIndex = 4;
+                    timer_showwarn.Enabled = true;
+                    timer_showwarn.Start();
+                    ChouQian_Manual();
+                }
+                else
+                {
+                    Tbcl.SelectedIndex = 3;
+                    ChouQian_Manual();
+                }
+
             }
         }
 
