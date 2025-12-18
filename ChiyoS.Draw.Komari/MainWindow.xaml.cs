@@ -29,9 +29,8 @@ namespace ChiyoS.Draw.Komari
         System.Timers.Timer timer_start = new System.Timers.Timer();
         System.Timers.Timer timer_xh = new System.Timers.Timer();
         System.Timers.Timer timer_bggd = new System.Timers.Timer();
-
-        
-
+        System.Timers.Timer timer_showwarn = new System.Timers.Timer();
+        System.Timers.Timer timer_dynafreq = new System.Timers.Timer();
         int stid = 0;
         int xhn = 0;
         int gt = 0;
@@ -39,6 +38,9 @@ namespace ChiyoS.Draw.Komari
         int gt2 = 0;
         int bgidz = 0;
         int bgid = 0;
+        int wshow = 4;
+        int dfreq = 0;
+        int[] dfreqs;
         bool isCanxh = false;
 
         ArrayList al = new ArrayList();
@@ -49,6 +51,92 @@ namespace ChiyoS.Draw.Komari
         public MainWindow()
         {
             InitializeComponent();          
+        }
+
+        private void MWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            timer1.Interval = 13;
+            timer1.Enabled = false;
+            timer1.Elapsed += XHNum;
+            timer_xh.Interval = 13;
+            timer_xh.Enabled = false;
+            timer_xh.Elapsed += XHName;
+            timer_showwarn.Interval = 1000;
+            timer_showwarn.Enabled = false;
+            timer_showwarn.Elapsed += Showwarn;
+            timer_start.Interval = 1000;
+            timer_start.Enabled = true;
+            timer_start.Elapsed += StartDelay;
+            timer_start.Start();
+            timer_dynafreq.Interval = 200;
+            timer_dynafreq.Enabled = false;
+            timer_dynafreq.Elapsed += Dynafreq;
+            Task.Run(new Action(() =>
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    string str;
+                    try
+                    {
+                        //加载学号表
+                        str = File.ReadAllText(@"D:\ChiyoS\Data\students.json");
+                        root = JsonConvert.DeserializeObject<Root>(str);
+                    }
+                    catch (Exception ex)
+                    {
+                        timer_start.Stop();
+                        timer_start.Enabled = false;
+                        Growl.Error("加载Json数据失败！");
+                        Btn_PZ_DrawS.IsEnabled = false;
+                        Btn_PZ_ToRST.IsEnabled = false;
+                        Btn_Enter.IsEnabled = true;
+                        Btn_Enter.Visibility = Visibility.Visible;
+                        Tbk_PZ_Info.Visibility = Visibility.Visible;
+                        Tbk_wel.Text = "少女祈祷失败";
+                        Tbk_wel2.Text = "加载Json数据失败！";
+                        Pgb_wel.Visibility = Visibility.Hidden;
+                        HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
+                        return;
+                    }
+
+                    Nud_cqrs.Maximum = root.students.Count;
+                    Nud_endid.Maximum = root.students.Count;
+                    try
+                    {
+                        foreach (Students itm in root.students)
+                        {
+                            Everyone.Add(itm.name);
+                            if (itm.s == "b")
+                            {
+                                boys.Add(itm.name);
+                            }
+                            else
+                            {
+                                girls.Add(itm.name);
+                            }
+                        }
+                    }
+                    catch
+                    {
+                    }
+                    try
+                    {
+                        str = File.ReadAllText(@"D:\ChiyoS\Data\bg.json");
+                        root_bg = JsonConvert.DeserializeObject<Root_bg>(str);
+                        timer_bggd.Interval = root_bg.interval;
+                        timer_bggd.Elapsed += Bggd;
+                        timer_bggd.Enabled = true;
+                        timer_bggd.Start();
+                    }
+                    catch
+                    {
+                        Growl.Warning("背景轮换列表bg.json加载失败");
+                    }
+
+                    Growl.Info("当前载入:" + root.title);
+                    Title = "ChiyoS.Draw.Komari|Version:2.7.0.0|当前载入配置文件:" + root.title;
+                }));
+            }));
         }
 
         /// <summary>
@@ -67,7 +155,7 @@ namespace ChiyoS.Draw.Komari
                     }
                     Tbk_RST_Text.Text = "执行中";
 
-                    Tbcl.SelectedIndex = 2;
+                    Tbcl.SelectedIndex = 3;
                     Btn_RST_BacktoPZ.IsEnabled = false;
                     Btn_RST_Cancle.IsEnabled = false;
                     Btn_RST_Restart.IsEnabled = false;
@@ -148,7 +236,7 @@ namespace ChiyoS.Draw.Komari
             {
                 Dispatcher.Invoke(() =>
                 {
-                    isCanxh = true;
+                    isCanxh = true;//Unlock
                     Nud_cqrs.IsEnabled = false;
                     BtnG.IsEnabled = false;
                     Nud_interval.IsEnabled = false;
@@ -162,8 +250,9 @@ namespace ChiyoS.Draw.Komari
                     Btn_RST_cq.Visibility = Visibility.Visible;
                     Btn_RST_cq.IsEnabled = true;
                     Btn_RST_Cancle.IsEnabled = true;
-                    Tbcl.SelectedIndex = 2;
                     
+                    
+                    timer_dynafreq.Enabled = true;
                     Tbk_RST_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_cqrs.Value);
                     if (Rbtn_GDMZ.IsChecked==true)
                     {
@@ -183,18 +272,23 @@ namespace ChiyoS.Draw.Komari
                         }
                         timer_xh.Enabled = true;
                         timer_xh.Interval = Nud_interval.Value;
-                        timer_xh.Start();
-                        
+                        timer_xh.Start();                       
                     }
                     else
                     {
                         xhn = 1;
-                        gt = 0;
+                        gt = 0;                
                         timer1.Enabled = true;
                         timer1.Interval = Nud_interval.Value;//循环频率
-                        timer1.Start();
+                        timer1.Start();               
                     }
-                             });
+                    if (Cbx_DynamicFrequency.IsChecked == true)
+                    {
+                        dfreqs = randomF2.GenerateUniqueRandom(24, 45, 20);
+                        timer_dynafreq.Enabled = true;
+                        timer_dynafreq.Start();
+                    }
+                });
             });
         }
         private void XHName(object sender, ElapsedEventArgs e)
@@ -223,7 +317,7 @@ namespace ChiyoS.Draw.Komari
 
         private void StartDelay(object sender, ElapsedEventArgs e)
         {
-            if (stid == 4)
+            if (stid == 1)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -346,6 +440,7 @@ namespace ChiyoS.Draw.Komari
                 if (gt >= Nud_cqrs.Value)
                 {
                     isCanxh = false;
+                    timer_dynafreq.Stop();
                     StopMualTask("[手动模式] 抽取完成!(如果上方有学号请忽略)", "抽取完成");
                     
                 }
@@ -385,6 +480,7 @@ namespace ChiyoS.Draw.Komari
                 if(gt2>= Nud_cqrs.Value)
                 {
                     isCanxh = false;
+                    timer_dynafreq.Stop();
                     StopMualTask("[手动模式] 抽取完成!(如果上方有名字请忽略)", "抽取完成");
                     
                 }
@@ -426,6 +522,9 @@ namespace ChiyoS.Draw.Komari
             else if (Rbtn_RManual.IsChecked == true)
             {
                 isCanxh = true;
+                Tbcl.SelectedIndex = 4;
+                timer_showwarn.Enabled = true;
+                timer_showwarn.Start();
                 ChouQian_Manual();
             }
         }
@@ -468,20 +567,20 @@ namespace ChiyoS.Draw.Komari
             Btn_Enter.IsEnabled = false;
             Storyboard storyboard = (FindResource("Entermp") as Storyboard);
             Storyboard storyboard2 = (FindResource("Entermp2") as Storyboard);
-            storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 1; storyboard2.Begin(Gd_PZ); };//去配置页//
+            storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 2; storyboard2.Begin(Gd_PZ); };//去配置页//
             storyboard.Begin();
             
         }
 
         private void Btn_PZ_ToRST_Click(object sender, RoutedEventArgs e)
         {
-            Tbcl.SelectedIndex = 2;
+            Tbcl.SelectedIndex = 3;
             //去结果页
         }
 
         private void Btn_RST_BacktoPZ_Click(object sender, RoutedEventArgs e)
         {
-            Tbcl.SelectedIndex = 1;
+            Tbcl.SelectedIndex = 2;
             //去配置页
         }
 
@@ -551,86 +650,37 @@ namespace ChiyoS.Draw.Komari
             }
         }
 
-        private void MWindow_Loaded(object sender, RoutedEventArgs e)
+        
+        private void Showwarn(object sender, ElapsedEventArgs e)
         {
-            timer1.Interval = 13;
-            timer1.Enabled = false;
-            timer1.Elapsed += XHNum;
-            timer_xh.Interval = 13;
-            timer_xh.Enabled = false;
-            timer_xh.Elapsed += XHName;
-            timer_start.Interval = 1000;
-            timer_start.Enabled = true;
-            timer_start.Elapsed += StartDelay;
-            timer_start.Start();
-            _ = Task.Run(new Action(() =>
+            try
             {
+                
                 Dispatcher.Invoke(new Action(() =>
-                {    
-                    string str;
-                    try
+                {
+                    if (wshow >= 0)
                     {
-                        //加载学号表
-                        str = File.ReadAllText(@"D:\ChiyoS\Data\students.json");
-                        root = JsonConvert.DeserializeObject<Root>(str);
+                        Otxt_Warn_down.Text = wshow.ToString();
+                        wshow--;
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        timer_start.Stop();
-                        timer_start.Enabled = false;
-                        Growl.Error("加载Json数据失败！");
-                        Btn_PZ_DrawS.IsEnabled = false;
-                        Btn_PZ_ToRST.IsEnabled = false;
-                        Btn_Enter.IsEnabled = true;
-                        Btn_Enter.Visibility = Visibility.Visible;
-                        Tbk_PZ_Info.Visibility = Visibility.Visible;
-                        Tbk_wel.Text = "少女祈祷失败";
-                        Tbk_wel2.Text = "加载Json数据失败！";
-                        Pgb_wel.Visibility = Visibility.Hidden;
-                        HandyControl.Controls.MessageBox.Error(ex.Message, "错误");
-                        return;
-                    }
-                    
-                    Nud_cqrs.Maximum = root.students.Count;
-                    Nud_endid.Maximum = root.students.Count;
-                    try
-                    {
-                        foreach (Students itm in root.students)
+                        if (Cbx_DynamicFrequency.IsChecked == true)
                         {
-                            Everyone.Add(itm.name);
-                            if (itm.s == "b")
-                            {
-                                boys.Add(itm.name);
-                            }
-                            else
-                            {
-                                girls.Add(itm.name);
-                            }
+                            Showflowtext("动态频率已开启");
                         }
-                    }
-                    catch
-                    {
-                    }
-                    try
-                    {
-                        str = File.ReadAllText(@"D:\ChiyoS\Data\bg.json");
-                        root_bg = JsonConvert.DeserializeObject<Root_bg>(str);
-                        timer_bggd.Interval = root_bg.interval;
-                        timer_bggd.Elapsed += Bggd;
-                        timer_bggd.Enabled = true;
-                        timer_bggd.Start();
-                    }
-                    catch
-                    {
-                        Growl.Warning("背景轮换列表bg.json加载失败");
+                        timer_showwarn.Stop();
+                        Tbcl.SelectedIndex = 3;
+                        
                     }
                     
-                    Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.6.0.0|当前载入配置文件:" + root.title;
                 }));
-            }));
-        }
+            }
+            catch
+            {
 
+            }
+        }
         private void Bggd(object sender, ElapsedEventArgs e) 
         {
             try
@@ -690,11 +740,30 @@ namespace ChiyoS.Draw.Komari
                     bgid++;
                 }
             }
-            //Storyboard Stbd_Opacity3 = (FindResource("Opacity3") as Storyboard);
-            //Storyboard Stbd_Opacity4 = (FindResource("Opacity4") as Storyboard);
+
             
         }
 
+        private void Dynafreq(object sender, ElapsedEventArgs e)
+        {
+            if(dfreq> dfreqs.Length - 1)
+            {
+                dfreq = 0;
+            }
+            else
+            {
+                if (Rbtn_GDMZ.IsChecked == true)
+                {
+                    timer_xh.Interval = dfreqs[dfreq];
+                }
+                else
+                {
+                    timer1.Interval = dfreqs[dfreq];
+                }
+                dfreq++;
+            }
+            
+        }
 
         private ArrayList Getname(int[] nm, int tid)
         {
@@ -727,7 +796,19 @@ namespace ChiyoS.Draw.Komari
 
 
         }
-
+        public void Showflowtext(string txt)
+        {
+            Task.Run(() =>{
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    Tbk_flowtext.Text = txt;
+                    Storyboard storyboard = (FindResource("Opacity1") as Storyboard);
+                    Storyboard storyboard2 = (FindResource("Opacity2") as Storyboard);
+                    storyboard.Completed += (o, a) => { storyboard2.Begin(Tbk_flowtext); };
+                    storyboard.Begin(Tbk_flowtext);
+                }));
+            });
+        }
 
         private void Btn_RST_Restart_Click(object sender, RoutedEventArgs e)
         {

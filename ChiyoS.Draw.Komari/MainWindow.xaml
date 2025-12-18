@@ -9,22 +9,15 @@
            
            x:Name="MWindow"
         Title="ChiyoS.Draw.Komari" Height="640" Width="1126.5" Loaded="MWindow_Loaded" ResizeMode="CanMinimize" Closing="MWindow_Closing" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Icon="新建画布1.png" Background="{x:Null}">
-    <hc:Window.Triggers>
-        <EventTrigger RoutedEvent="Window.Loaded" >
-            <BeginStoryboard>
-                <Storyboard>
-                    <DoubleAnimation Duration="00:00:04" Storyboard.TargetProperty="Opacity" From="0" To="1" />
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-
-    </hc:Window.Triggers>
     <Grid>
-        
+
         <Image x:Name="Img_bg1" Source="/104105335_p1_亚托莉 2022farewell.jpg" Stretch="UniformToFill"/>
         <Image x:Name="Img_bg2" Stretch="UniformToFill" Opacity="0"/>
+
         <TabControl x:Name="Tbcl" Background="{x:Null}">
             <TabItem Visibility="Collapsed">
+            </TabItem>
+            <TabItem Visibility="Collapsed" IsSelected="True">
                 <Grid Height="612">
                     <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontSize="100" Margin="0,221,0,269" Foreground="Black"/>
                     <Button x:Name="Btn_Enter" Click="Btn_Enter_Click" Content="进入"  Margin="491,353,479,100" Height="70" Visibility="Hidden" Width="240" Style="{StaticResource ButtonSuccess}" FontSize="30">
@@ -37,22 +30,22 @@
                     </Button>
                     <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True" Margin="188,348,188,260" Foreground="#FFFD3792"/>
                     <TextBlock x:Name="Tbk_wel2"  Width="350" Height="35" Text="正在做一些必要的准备，请稍后" FontSize="24" TextAlignment="Center" Margin="388,357,388,220" Foreground="Black"/>
-                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="726,558,0,0" TextAlignment="Right" Text="背景：&lt;ATRI&gt;アトリ" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="#FF6D6D6D"/>
+                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="726,558,0,0" TextAlignment="Right" Text="&lt;ATRI&gt;アトリ" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="#FF6D6D6D"/>
                 </Grid>
             </TabItem>
-            <TabItem  Visibility="Collapsed">
+            <TabItem Visibility="Collapsed">
                 <Grid x:Name="Gd_PZ" Height="612">
                     <TextBlock Text="配置" Height="80" Width="300" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="64"/>
-                    <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="386,247,386,0">
+                    <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="388,247,382,0">
                         <RadioButton x:Name="Rbtn_RManual" Content="&#xEB32; 手动抽取" Click="Rbtn_RManual_Click_1" IsChecked="True" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" Height="36" FontSize="20"/>
                         <RadioButton x:Name="Rbtn_RAuto" Content="&#xE634; 自动抽取" Click="Rbtn_RAuto_Click_1"  FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="20" Height="36"/>
                     </hc:ButtonGroup>
                     <hc:NumericUpDown x:Name="Nud_cqrs" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,288,584,284" hc:TitleElement.Title="抽取人数" hc:TitleElement.Foreground="White" hc:TitleElement.TitlePlacement="Left"  Style="{StaticResource NumericUpDownExtend}" FontSize="14" Foreground="Black"/>
-                    <hc:NumericUpDown x:Name="Nud_interval" Value="45" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="573,290,397,286" FontSize="14"/>
+                    <hc:NumericUpDown x:Name="Nud_interval" Value="24" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="590,290,386,286" FontSize="14"/>
 
                     <hc:NumericUpDown x:Name="Nud_stid" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,364,584,208" hc:TitleElement.Title="起始学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
-                    <hc:NumericUpDown x:Name="Nud_endid" Value="55" Height="35" Maximum="55" Minimum="1" Margin="573,366,399,210" hc:TitleElement.Title="终止学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
-                    <hc:ButtonGroup x:Name="BtnG_2" Height="34" Width="250" Margin="471,328,399,0" Style="{StaticResource ButtonGroupSolid}">
+                    <hc:NumericUpDown x:Name="Nud_endid" Value="55" Height="35" Maximum="55" Minimum="1" Margin="586,364,388,213" hc:TitleElement.Title="终止学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
+                    <hc:ButtonGroup x:Name="BtnG_2" Height="34" Width="250" Margin="490,328,386,0" Style="{StaticResource ButtonGroupSolid}">
                         <RadioButton x:Name="Rbtn_GDMZ" Content="以名字方式滚动" IsChecked="True"/>
                         <RadioButton x:Name="Rbtn_GDXH" Content="以学号方式滚动" />
                     </hc:ButtonGroup>
@@ -73,7 +66,9 @@
                                 <GradientStop Color="#FF1B9CEF" Offset="1"/>
                             </LinearGradientBrush>
                         </Button.Background>
+
                     </Button>
+                    <CheckBox x:Name="Cbx_DynamicFrequency" Content="开启动态频率" IsChecked="True" HorizontalAlignment="Left" Margin="388,336,0,0" VerticalAlignment="Top"/>
                     <Button x:Name="Btn_PZ_ToRST" Content="&#xe612; 结果页" Click="Btn_PZ_ToRST_Click"  Margin="584,488,386,74" Height="50" Width="150" Style="{StaticResource ButtonPrimary}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" >
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -82,7 +77,7 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="726,569,0,10"  Text="背景：&lt;ATRI&gt;アトリ" TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="#FF6D6D6D"/>
+                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="726,569,0,10"  Text="&lt;ATRI&gt;アトリ" TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="#FF6D6D6D"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
@@ -121,8 +116,8 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="125" Width="40"  Click="Btn_RST_ScvLeft_Click" Margin="10,471,1070,26" Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White"></Button>
-                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="125" Width="40" Click="Btn_RST_ScvRight_Click" Margin="1070,471,10,26" Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White"></Button>
+                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="127" Width="40"  Click="Btn_RST_ScvLeft_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" />
+                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="127" Width="40" Click="Btn_RST_ScvRight_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="White" HorizontalAlignment="Left" Margin="1076,457,0,0" VerticalAlignment="Top" />
                     <hc:ScrollViewer x:Name="Scve_RST_s1" Height="202" Margin="66,408,66,2" Orientation="Horizontal" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
                         <StackPanel x:Name="Stp_RST_s1" Orientation="Horizontal">
 
@@ -131,20 +126,25 @@
                     <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="提示" TextAlignment="Center" FontSize="30" Foreground="Black" Opacity="0.7"/>
                 </Grid>
             </TabItem>
-
+            <TabItem Visibility="Collapsed">
+                <Grid>
+                    <hc:OutlineText x:Name="Otxt_Warn_wt" Text="警告：请勿间隔相同或相近时间点击抽取，否则抽中个体会被人为因素的限定在某一范围" TextWrapping="WrapWithOverflow" Stroke="White" Fill="Black" StrokeThickness="0.9" FontSize="68" Height="257"/>
+                    <hc:OutlineText x:Name="Otxt_Warn_down" Text="倒计时" Stroke="Gray" Fill="Orange" StrokeThickness="0.9" FontSize="68" TextAlignment="Center" Margin="0,425,0,38" />
+                </Grid>
+            </TabItem>
 
         </TabControl>
-
+        <TextBlock x:Name="Tbk_flowtext" Text="Text" Height="80" TextAlignment="Center" FontSize="54" Margin="0,10,0,540" Background="#FF0CB0DA" Foreground="White" Opacity="0"/>
     </Grid>
     <hc:Window.Resources>
         <Storyboard x:Key="Entermp">
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2"/>
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel2" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2"/>
-            <DoubleAnimation Storyboard.TargetName="Btn_Enter" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2"/>
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel_bgif" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:1.2"/>
+            <DoubleAnimation Storyboard.TargetName="Tbk_wel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
+            <DoubleAnimation Storyboard.TargetName="Tbk_wel2" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
+            <DoubleAnimation Storyboard.TargetName="Btn_Enter" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
+            <DoubleAnimation Storyboard.TargetName="Tbk_wel_bgif" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
         </Storyboard>
         <Storyboard x:Key="Entermp2">
-            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:2"/>
+            <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.4"/>
         </Storyboard>
         <Storyboard x:Key="Opacity1">
             <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:2"/>
