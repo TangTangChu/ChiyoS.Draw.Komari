@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ChiyoS.Draw.Komari.BGSTItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChiyoS.Draw.Komari"
+             mc:Ignorable="d" 
+             Width="880" Height="180" Loaded="UserControl_Loaded" FontFamily="GEETYPE-WaonProGB-Flash DB"
+             >
+        
+        <Border>
+        <DockPanel>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Left" Width="320">
+                <Border>
+                    <Image x:Name="Img_1" Height="150"/>
+                </Border>
+                <TextBlock x:Name="Tbk_1" TextAlignment="Center" FontWeight="ExtraBlack" FontSize="15"/>
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Right">
+                <TextBlock x:Name="Tbk_title" Text="Title" FontSize="22" Height="28" FontWeight="ExtraBlack" TextAlignment="Right"/>
+                <TextBlock x:Name="Tbk_path" Text="PATH" FontSize="16" Height="20" TextAlignment="Right"/>
+                <TextBlock x:Name="Tbk_count" Text="COUNT" FontSize="16" Height="20" TextAlignment="Right"/>
+                <TextBlock  x:Name="Tbk_isCol" Visibility="Hidden" DockPanel.Dock="Left"  Text="集合"  Height="20"  FontSize="14" FontWeight="Bold" TextAlignment="Center" Width="30"   Foreground="White" Background="#FF7C32ED"/>
+            </StackPanel>
+            
+
+        </DockPanel>
+        
+    </Border>
+        
+
+</UserControl>

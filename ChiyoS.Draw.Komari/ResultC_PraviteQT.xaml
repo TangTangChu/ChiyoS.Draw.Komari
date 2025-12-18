@@ -12,8 +12,9 @@
         <TextBlock x:Name="Tbk_Num" Text="N" Margin="153,175,10,10" Foreground="#FF008FFA" FontWeight="ExtraBold" TextAlignment="Center" FontStyle="Italic" FontSize="13" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB"/>
         <Border x:Name="Bd_1" CornerRadius="50" Width="164" Height="160" Margin="18,0,18,40" BorderBrush="#FF9EC8E5" BorderThickness="2" >
             <Border.Background>
-                <ImageBrush ImageSource="no title_115887010-cover.jpg" Stretch="UniformToFill"/>
+                <ImageBrush Stretch="UniformToFill" ImageSource="/no title_115887010-cover.jpg" RenderOptions.BitmapScalingMode="HighQuality"/>
             </Border.Background>
+
 
         </Border>
     </Grid>

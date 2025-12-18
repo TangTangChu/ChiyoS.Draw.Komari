@@ -1,0 +1,40 @@
+﻿<hc:Window x:Class="ChiyoS.Draw.Komari.BackgroundST"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChiyoS.Draw.Komari"
+        mc:Ignorable="d"
+        Title="BackgroundST" Height="550" Width="1100" Loaded="Window_Loaded" FontFamily="GEETYPE-WaonProGB-Flash DB" 
+        >
+    <Window.Resources>
+        <Storyboard x:Key="dnt_1">
+            <DoubleAnimation Duration="0:0:1.5" From="0" To="70" Storyboard.TargetProperty="Radius" Storyboard.TargetName="ble_1"/>
+        </Storyboard>
+    </Window.Resources>
+    <Grid>
+        <Image x:Name="Image_Bg" Stretch="UniformToFill" Source="/sakura_91373934.jpg">
+            <Image.Effect >
+                <BlurEffect x:Name="ble_1" RenderingBias="Quality" Radius="70"/>
+            </Image.Effect>
+        </Image>
+        <StackPanel Orientation="Horizontal" >
+            <hc:ScrollViewer x:Name="Scl_1" Width="920" Height="500">
+                <ListView x:Name="Ltv_1" Width="{Binding ElementName=Scl_1,Path=Width,Mode=OneWay}"  Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}"></ListView>
+            </hc:ScrollViewer>
+            
+           <DockPanel LastChildFill="False" Height="500">
+                <StackPanel Width="175" DockPanel.Dock="Top">
+                    <TextBox x:Name="Tbx_Title" Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="ExtraBold" VerticalScrollBarVisibility="Auto"/>
+                    <TextBox x:Name="Tbx_Dscpt" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                </StackPanel>
+                <Button x:Name="Btn_ApplyBg" Content="应用" Click="Btn_ApplyBg_Click" Width="155" Height="40" DockPanel.Dock="Bottom" Background="#FF003EFF" Foreground="White" />
+                <Button x:Name="Btn_view" Content="预览" Click="Btn_view_Click" Width="155" Height="40" Background="#FFFF417E" Foreground="White" BorderBrush="White" BorderThickness="0.8" DockPanel.Dock="Bottom" FontWeight="Bold"/>
+            </DockPanel>
+        </StackPanel>
+    </Grid>
+
+    
+
+</hc:Window>

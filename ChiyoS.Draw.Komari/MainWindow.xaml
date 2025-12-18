@@ -11,20 +11,22 @@
         Title="ChiyoS.Draw.Komari" Height="640" Width="1126.5" Loaded="MWindow_Loaded" ResizeMode="CanMinimize" Closing="MWindow_Closing" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" Icon="/65750322_p0_ふうこ.png" Background="{x:Null}">
     <hc:Window.NonClientAreaContent>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button x:Name="Btn_SDE" Content="编辑学号表" Click="Btn_SDE_Click" BorderBrush="{x:Null}" Foreground="#FFE50FB8"/>
+            <Button x:Name="Btn_SDE" Content="编辑学号表" Click="Btn_SDE_Click" BorderBrush="{x:Null}" Foreground="#FFF55151"/>
+            <Button x:Name="Btn_About" Content="关于此" Click="Btn_About_Click" BorderBrush="{x:Null}" Foreground="#FF2F91FF"/>
         </StackPanel>
     </hc:Window.NonClientAreaContent>
         <Grid>
 
-        <Image x:Name="Img_bg1" Source="115826130_p1_星萤.jpg" Stretch="UniformToFill"/>
-        <Image x:Name="Img_bg2" Stretch="UniformToFill" Opacity="0"/>
+        <Image x:Name="Img_bg1" Source="/木漏れ日_103878825.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="HighQuality"/>
+        <Image x:Name="Img_bg2" Stretch="UniformToFill" Opacity="0" RenderOptions.BitmapScalingMode="Fant"/>
 
         <TabControl x:Name="Tbcl" Background="{x:Null}">
             <TabItem Visibility="Collapsed">
             </TabItem>
             <TabItem Visibility="Collapsed" IsSelected="True">
-                <Grid >
-                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontWeight="Bold" FontSize="100" Margin="0,270,0,220.2" Foreground="White" Opacity="0.75"/>
+                <Grid x:Name="Gd_HL">
+                    <TextBlock Text="&#xe728;" Width="80" Height="80" FontSize="58" TextAlignment="Center" Margin="0,0,1046,514" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"/>
+                    <TextBlock x:Name="Tbk_wel" Text="少女祈祷中..." TextAlignment="Center" FontWeight="Bold" FontSize="100" Margin="0,270,0,220.2" Foreground="Black" Opacity="0.82"/>
                     <Button x:Name="Btn_Enter" Click="Btn_Enter_Click" Content="进入"  Margin="491,353,479,100" Height="70" Visibility="Hidden" Width="240" Style="{StaticResource ButtonSuccess}" FontSize="30">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -34,13 +36,13 @@
                         </Button.Background>
                     </Button>
                     <ProgressBar x:Name="Pgb_wel" Style="{DynamicResource ProgressBarFlat}" Width="750" IsIndeterminate="True" Margin="200,372,170,203.2" Foreground="#FFFD3792"/>
-                    <TextBlock x:Name="Tbk_wel2" Height="35" Text="正在做一些必要的准备，请稍后" FontWeight="Medium" FontSize="24" TextAlignment="Center" Foreground="White" Margin="0,381,0,163.2" Opacity="0.74"/>
-                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="720,547,0,-0.8" TextAlignment="Right" Text="夜色名为温柔" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="White"/>
+                    <TextBlock x:Name="Tbk_wel2" Height="35" Text="正在做一些必要的准备，请稍后" FontWeight="Medium" FontSize="24" TextAlignment="Center" Foreground="Black" Margin="0,381,0,163.2" Opacity="0.82"/>
+                    <TextBlock x:Name="Tbk_wel_bgif"  Margin="720,547,0,-0.8" TextAlignment="Right" Text="夜色名为温柔" VerticalAlignment="Top" Height="33" Width="400" FontSize="26" Foreground="Black"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">
                 <Grid x:Name="Gd_PZ" Height="612">
-                    <TextBlock Text="配置" FontWeight="Bold" Height="80" Width="300" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="64" Foreground="White"/>
+                    <TextBlock Text="&#xe605;" Width="80" Height="80" FontSize="58" TextAlignment="Center" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" Margin="0,0,1046,514"/>
                     <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="388,247,382,0">
                         <RadioButton x:Name="Rbtn_RManual" Content="&#xEB32; 手动抽取" IsChecked="True" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" Height="36" FontSize="20"/>
                         <RadioButton x:Name="Rbtn_RAuto" Content="&#xE634; 自动抽取" Click="Rbtn_RAuto_Click_1"  FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="20" Height="36"/>
@@ -82,7 +84,7 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="720,547,0,-0.8"  Text="夜色名为温柔"  TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="White"/>
+                    <TextBlock x:Name="Tbk_PZ_bgif" Margin="720,547,0,-0.8"  Text="夜色名为温柔"  TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="Black"/>
                     <CheckBox x:Name="Cbx_isNosquence" Content="启用乱序滚动列" IsChecked="True" IsEnabled="{Binding ElementName=Rbtn_RManual,Path=IsChecked,Mode=OneWay}" HorizontalAlignment="Left" Margin="604,406,0,0" VerticalAlignment="Top" Foreground="Black"/>
                 </Grid>
             </TabItem>
@@ -96,9 +98,9 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontWeight="ExtraBold" FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="White" Opacity="0.6"/>
-                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="这是信息" FontWeight="Medium" TextAlignment="Center" FontSize="30" Foreground="White" Opacity="0.7"/>
-                    <TextBlock x:Name="Tbk_RST_Count" Text="计数器" Height="30" FontStyle="Italic" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="White" Opacity="0.7" />
+                    <TextBlock x:Name="Tbk_RST_Text" Text="これはテキストです " FontWeight="ExtraBold" FontSize="100" Height="110" TextAlignment="Center" Margin="0,119,0,365" Foreground="Black" Opacity="0.85"/>
+                    <TextBlock x:Name="Tbk_RST_Info" Margin="0,244,0,308" Height="42"  Text="这是信息" FontWeight="Medium" TextAlignment="Center" FontSize="30" Foreground="Black" Opacity="0.85"/>
+                    <TextBlock x:Name="Tbk_RST_Count" Text="计数器" Height="30" FontStyle="Italic" Margin="966,370,41,207.4" TextAlignment="Center" FontSize="24" Foreground="Black" Opacity="0.9" />
                     <Button x:Name="Btn_RST_Cancle" Content="&#xe653; 取消" Click="Btn_RST_Cancle_Click" Style="{DynamicResource ButtonDanger}" IsEnabled="False" Width="100" Height="30" Margin="986,291,0,0" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" HorizontalAlignment="Left" VerticalAlignment="Top">
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -124,8 +126,8 @@
                             </LinearGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="127" Width="40"  Click="Btn_RST_ScvLeft_Click"  Background="{x:Null}" FontSize="60" Foreground="White" BorderBrush="White" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" />
-                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="127" Width="40" Click="Btn_RST_ScvRight_Click"  Background="{x:Null}" FontSize="60" Foreground="White" BorderBrush="White" HorizontalAlignment="Left" Margin="1076,457,0,0" VerticalAlignment="Top" />
+                    <Button x:Name="Btn_RST_ScvLeft" Content="‹" Height="127" Width="40"  Click="Btn_RST_ScvLeft_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="Black" HorizontalAlignment="Left" Margin="10,457,0,0" VerticalAlignment="Top" FontWeight="Black"/>
+                    <Button x:Name="Btn_RST_ScvRight" Content="›" Height="127" Width="40" Click="Btn_RST_ScvRight_Click"  Background="{x:Null}" FontSize="60" Foreground="Black" BorderBrush="Black" HorizontalAlignment="Left" Margin="1076,457,0,0" VerticalAlignment="Top" FontWeight="Black"/>
                     <hc:ScrollViewer x:Name="Scve_RST_s1" Height="202" Margin="66,408,66,2" Orientation="Horizontal" HorizontalScrollBarVisibility="Auto" PanningMode="Both">
                         <StackPanel x:Name="Stp_RST_s1" Orientation="Horizontal">
 
@@ -146,10 +148,7 @@
     </Grid>
     <hc:Window.Resources>
         <Storyboard x:Key="Entermp">
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel2" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
-            <DoubleAnimation Storyboard.TargetName="Btn_Enter" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
-            <DoubleAnimation Storyboard.TargetName="Tbk_wel_bgif" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.3"/>
+            <DoubleAnimation From="1" To="0" Storyboard.TargetProperty="Opacity" Duration="0:0:0.3"/>
         </Storyboard>
         <Storyboard x:Key="Entermp2">
             <DoubleAnimation From="0" To="1" Storyboard.TargetProperty="Opacity" Duration="0:0:0.7"/>

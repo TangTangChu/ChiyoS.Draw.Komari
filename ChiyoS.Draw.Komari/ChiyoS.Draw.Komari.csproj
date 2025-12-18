@@ -66,6 +66,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="About.xaml.cs">
+      <DependentUpon>About.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BackgroundST.xaml.cs">
+      <DependentUpon>BackgroundST.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="BGSTItem.xaml.cs">
+      <DependentUpon>BGSTItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="JsonClass.cs" />
     <Compile Include="Json_bg.cs" />
     <Compile Include="Random.cs" />
@@ -85,6 +94,18 @@
     <Compile Include="StudentsDataEditor.xaml.cs">
       <DependentUpon>StudentsDataEditor.xaml</DependentUpon>
     </Compile>
+    <Page Include="About.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BackgroundST.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="BGSTItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -155,13 +176,15 @@
     <Resource Include="fuuko.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="b2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="115826130_p1_星萤.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="no title_115887010-cover.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="sakura_91373934.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="77667220_p0_魔法少女特日日.jpg" />
+    <Resource Include="木漏れ日_103878825.jpg" />
+    <Resource Include="白聖女_82645332.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -121,7 +121,7 @@ namespace ChiyoS.Draw.Komari
                     catch
                     {
                     }
-                    //背景轮换
+                    //背景轮换,把注释去了可以开启
                     /**
                     try
                     {
@@ -138,7 +138,7 @@ namespace ChiyoS.Draw.Komari
                     }
                     **/
                     Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.9.2|夜色名为温柔|数据集:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:3.0.0|数据集:" + root.title;
                 }));
             }));
         }
@@ -630,7 +630,7 @@ namespace ChiyoS.Draw.Komari
             Storyboard storyboard = FindResource("Entermp") as Storyboard;
             Storyboard storyboard2 = FindResource("Entermp2") as Storyboard;
             storyboard.Completed += (o, a) => { Tbcl.SelectedIndex = 2; storyboard2.Begin(Gd_PZ); };//去配置页//
-            storyboard.Begin();
+            storyboard.Begin(Gd_HL);
             
         }
 
@@ -874,6 +874,18 @@ namespace ChiyoS.Draw.Komari
         {
             StudentsDataEditor SDE = new StudentsDataEditor(@"D:\ChiyoS\Data\students.json");
             SDE.Show();
+        }
+
+        private void Btn_BGST_Click(object sender, RoutedEventArgs e)
+        {
+            BackgroundST BGST = new BackgroundST(@"D:\ChiyoS\bgc");
+            BGST.Show();
+        }
+
+        private void Btn_About_Click(object sender, RoutedEventArgs e)
+        {
+            About ab = new About();
+            ab.Show();
         }
     }
 }

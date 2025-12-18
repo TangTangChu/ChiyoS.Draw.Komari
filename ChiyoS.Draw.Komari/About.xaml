@@ -1,0 +1,17 @@
+﻿<Window x:Class="ChiyoS.Draw.Komari.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ChiyoS.Draw.Komari"
+        mc:Ignorable="d"
+        PreviewMouseLeftButtonDown="Window_PreviewMouseLeftButtonDown"
+        PreviewMouseMove="Window_PreviewMouseMove"
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp"
+        Title="About" Background="Black" Height="450" Width="800" WindowStyle="None" AllowsTransparency="True" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB" ResizeMode="NoResize">
+    <Grid>
+        <Image Source="/77667220_p0_魔法少女特日日.jpg" Stretch="UniformToFill" RenderOptions.BitmapScalingMode="Fant" Opacity="0.8"/>
+        <TextBlock TextWrapping="WrapWithOverflow" Height="280" FontSize="19" Foreground="White"><Run Text="当你看到这个的时候，此软件的作者（2024届15班的学长）将要毕业或者已经毕业了，如果你愿意维护此项目我会十分开心的.请注意，此项目使用C#编写，窗体是WPF，项目的具体位置位于D盘，名为“ChiyoS.Draw.Komari”.本项目始创与21年首届实验班时期，历经近三年半的改进，加入了各种私货，巅峰时期有着和泉纱雾启动语音、动态壁纸还有日语欢迎语，然后被年级主任讨厌了，所以最终进化成了这副模样，但是本班的程序与隔壁班的程序至少高了8个版本，如果你有兴趣，可以前往QQ 3199552972的QQ空间查看部分更新说明.当然动态壁纸功能还在，只是代码里我关掉了。如果你愿意探索D:\ChiyoS文件夹，除了位于Data里students.json学号表，你还会发现各个版本遗留的产物包括但不限于P站精选插画哦." Foreground="White"/><LineBreak/><Run Text="其次，如果你想更改学号表，可以使用标题栏的编辑学号表功能进行编辑，双击相应区域可以进行更改哦."/><LineBreak/><Run Language="zh-cn" Text="以上 敬礼！   24届学长于24.4.04"/><LineBreak/><Run/></TextBlock>
+        <Button Content="关闭" Height="50" Width="130" Click="Button_Click" Background="#FFFD5858" BorderBrush="White" BorderThickness="2" Margin="0,365,0,0" VerticalAlignment="Top" FontWeight="Bold" Foreground="White" FontSize="20"/>
+    </Grid>
+</Window>
