@@ -7,12 +7,12 @@
              mc:Ignorable="d" 
              Height="200" Width="200">
     <Grid>
-        <Border x:Name="Bd_1" Style="{DynamicResource BorderCircular}" Opacity="0">
+        <Border x:Name="Bd_1" Style="{DynamicResource BorderCircular}" Opacity="0" d:Opacity="1">
             <Grid>
                 <TextBlock Text="&#xe600;" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" FontSize="180" TextAlignment="Center" Foreground="#FFFB466F"/>
                 <hc:OutlineText x:Name="Tbk_ID" Text="ID" Fill="White" StrokeThickness="0.5" FontSize="42" TextAlignment="Center" FontWeight="Bold" Margin="0,32,0,107" Stroke="#FFF14483" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB"/>
                 <hc:OutlineText x:Name="Tbk_Name" Text="Name" Margin="0,83,0,43" Fill="White" StrokeThickness="0.8" Stroke="#FFF14483" FontSize="58" FontWeight="Bold" TextAlignment="Center" FontFamily="/ChiyoS.Draw.Komari;component/#Tianshi-Yanti"/>
-                <TextBlock x:Name="Tbk_Num" Text="N" Margin="153,175,10,10" Foreground="#FFF14483" FontWeight="Bold" TextAlignment="Center" FontSize="13" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB"/>
+                <TextBlock x:Name="Tbk_Num" Text="N" Margin="153,175,10,10" Foreground="#FFF14483" FontWeight="ExtraBold" TextAlignment="Center" FontStyle="Italic" FontSize="13" FontFamily="/ChiyoS.Draw.Komari;component/#GEETYPE-WaonProGB-Flash DB"/>
 
             </Grid>
         </Border>

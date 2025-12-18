@@ -243,7 +243,7 @@ namespace ChiyoS.Draw.Komari
                     Nud_interval.IsEnabled = false;
                     Stp_RST_s1.Children.Clear();
                     Btn_RST_Restart.IsEnabled = false;
-                    Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
+                    //Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
                     Tbk_RST_Text.Text = "";
 
                     al.Clear();
@@ -252,14 +252,7 @@ namespace ChiyoS.Draw.Komari
                     Btn_RST_cq.IsEnabled = true;
                     Btn_RST_Cancle.IsEnabled = true;
 
-                    if (Cbx_DynamicFrequency.IsChecked == true)
-                    {
-                        timer_dynafreq.Enabled = true;
-                    }
-                    else
-                    {
-                        timer_dynafreq.Enabled = false;
-                    }
+                    
                     
                     Tbk_RST_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_cqrs.Value);
                     if (Rbtn_GDMZ.IsChecked==true)
@@ -303,9 +296,14 @@ namespace ChiyoS.Draw.Komari
                     }
                     if (Cbx_DynamicFrequency.IsChecked == true)
                     {
+                        timer_dynafreq.Enabled = true;
                         dfreqs = randomF2.GenerateUniqueRandom(24, 45, 20);
                         timer_dynafreq.Enabled = true;
                         timer_dynafreq.Start();
+                    }
+                    else
+                    {
+                        timer_dynafreq.Enabled = false;
                     }
                 });
             });
@@ -336,7 +334,7 @@ namespace ChiyoS.Draw.Komari
 
         private void StartDelay(object sender, ElapsedEventArgs e)
         {
-            if (stid == 3)
+            if (stid == 2)
             {
                 Dispatcher.Invoke(new Action(() =>
                 {
@@ -519,8 +517,11 @@ namespace ChiyoS.Draw.Komari
                 timer_xh.Stop();
                 timer_xh.Enabled = false;
             }
-            
-
+            if(Cbx_DynamicFrequency.IsChecked== true)
+            {
+                timer_dynafreq.Stop();
+                timer_dynafreq.Enabled = false;
+            }
             Nud_cqrs.IsEnabled = true;
             Nud_interval.IsEnabled = true;
             BtnG.IsEnabled = true;
@@ -532,7 +533,7 @@ namespace ChiyoS.Draw.Komari
             Tbk_RST_Text.Text = TText;
         }
 
-        private void Btn_PZ_DrawS_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void Btn_PZ_DrawS_Click(object sender, RoutedEventArgs e)
         {
             if (Rbtn_RAuto.IsChecked == true)
             {
