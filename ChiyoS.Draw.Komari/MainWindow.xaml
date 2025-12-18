@@ -37,24 +37,24 @@
                 <Grid x:Name="Gd_PZ" Height="612">
                     <TextBlock Text="配置" FontWeight="Bold" Height="80" Width="300" HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="64" Foreground="White"/>
                     <hc:ButtonGroup x:Name="BtnG" Height="36" Margin="388,247,382,0">
-                        <RadioButton x:Name="Rbtn_RManual" Content="&#xEB32; 手动抽取" Click="Rbtn_RManual_Click_1" IsChecked="True" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" Height="36" FontSize="20"/>
+                        <RadioButton x:Name="Rbtn_RManual" Content="&#xEB32; 手动抽取" IsChecked="True" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" Height="36" FontSize="20"/>
                         <RadioButton x:Name="Rbtn_RAuto" Content="&#xE634; 自动抽取" Click="Rbtn_RAuto_Click_1"  FontFamily="/ChiyoS.Draw.Komari;component/#iconfont"  FontSize="20" Height="36"/>
                     </hc:ButtonGroup>
                     <hc:NumericUpDown x:Name="Nud_cqrs" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,288,584,284" hc:TitleElement.Title="抽取人数" hc:TitleElement.Foreground="White" hc:TitleElement.TitlePlacement="Left"  Style="{StaticResource NumericUpDownExtend}" FontSize="14" Foreground="Black"/>
-                    <hc:NumericUpDown x:Name="Nud_interval" Value="24" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="590,290,386,286" FontSize="14"/>
+                    <hc:NumericUpDown x:Name="Nud_interval" Value="24" Height="35" Width="150" Minimum="1" hc:TitleElement.Title="Interval" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}" Margin="590,290,386,286" IsEnabled="{Binding ElementName=Rbtn_RAuto,Path=IsChecked,Mode=OneWay}" FontSize="14"/>
 
-                    <hc:NumericUpDown x:Name="Nud_stid" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" Margin="386,364,584,208" hc:TitleElement.Title="起始学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14" Background="White"/>
-                    <hc:NumericUpDown x:Name="Nud_endid" Value="55" Height="35" Maximum="55" Minimum="1" Margin="586,364,388,213" hc:TitleElement.Title="终止学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
-                    <hc:ButtonGroup x:Name="BtnG_2" Height="34" Width="250" Margin="490,328,386,0" Style="{StaticResource ButtonGroupSolid}">
+                    <hc:NumericUpDown x:Name="Nud_stid" Value="1" Height="35" Width="150" Maximum="55" Minimum="1" IsEnabled="{Binding ElementName=Cbx_cqgt_all,Path=IsSelected,Mode=OneWay}" Margin="386,364,584,208" hc:TitleElement.Title="起始学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14" Background="White"/>
+                    <hc:NumericUpDown x:Name="Nud_endid" Value="55" Height="35" Maximum="55" Minimum="1" IsEnabled="{Binding ElementName=Cbx_cqgt_all,Path=IsSelected,Mode=OneWay}" Margin="586,364,388,213" hc:TitleElement.Title="终止学号" hc:TitleElement.TitlePlacement="Left" hc:TitleElement.Foreground="White" Style="{StaticResource NumericUpDownExtend}"   FontSize="14"/>
+                    <hc:ButtonGroup x:Name="BtnG_2" Height="34" Width="250" IsEnabled="{Binding ElementName=Rbtn_RManual,Path=IsChecked,Mode=OneWay}" Margin="389,330,488,0" Style="{StaticResource ButtonGroupSolid}">
                         <RadioButton x:Name="Rbtn_GDMZ" Content="以名字方式滚动" IsChecked="True"/>
                         <RadioButton x:Name="Rbtn_GDXH" Content="以学号方式滚动" />
                     </hc:ButtonGroup>
-                    <ComboBox x:Name="Cbx_cqgt" SelectedIndex="0" SelectionChanged="Cbx_cqgt_SelectionChanged" Margin="386,406,532,0" VerticalAlignment="Top" Height="36" Style="{StaticResource ComboBoxExtend}" hc:TitleElement.Title="抽取个体" hc:TitleElement.TitlePlacement="Left">
-                        <ComboBoxItem Content="全体学生"/>
+                    <ComboBox x:Name="Cbx_cqgt" SelectedIndex="0" Margin="389,406,528,0" VerticalAlignment="Top" Height="36" Style="{StaticResource ComboBoxExtend}" hc:TitleElement.Title="抽取个体" hc:TitleElement.TitlePlacement="Left">
+                        <ComboBoxItem x:Name="Cbx_cqgt_all" Content="全体学生" />
                         <ComboBoxItem Content="男孩子"/>
                         <ComboBoxItem Content="女孩子"/>
                     </ComboBox>
-                    <ComboBox x:Name="Cbx_sf" SelectedIndex="0" IsEnabled="False" Margin="386,447,532,0" VerticalAlignment="Top" Height="36" Style="{StaticResource ComboBoxExtend}" hc:TitleElement.Title="抽取算法" hc:TitleElement.TitlePlacement="Left">
+                    <ComboBox x:Name="Cbx_sf" SelectedIndex="0" IsEnabled="{Binding ElementName=Rbtn_RAuto,Path=IsChecked,Mode=OneWay}" Margin="388,447,530,0" VerticalAlignment="Top" Height="36" Style="{StaticResource ComboBoxExtend}" hc:TitleElement.Title="抽取算法" hc:TitleElement.TitlePlacement="Left">
                         <ComboBoxItem Content="算法1" />
                         <ComboBoxItem Content="算法2" />
                     </ComboBox>
@@ -68,7 +68,7 @@
                         </Button.Background>
 
                     </Button>
-                    <CheckBox x:Name="Cbx_DynamicFrequency" Content="开启动态频率" IsChecked="False" HorizontalAlignment="Left" Margin="388,336,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                    <CheckBox x:Name="Cbx_DynamicFrequency" Content="启用动态频率" IsChecked="False" IsEnabled="{Binding ElementName=Rbtn_RManual,Path=IsChecked,Mode=OneWay}" HorizontalAlignment="Left" Margin="604,429,0,0" VerticalAlignment="Top" Foreground="Black" RenderTransformOrigin="0.505,0.528"/>
                     <Button x:Name="Btn_PZ_ToRST" Content="&#xe612; 结果页" Click="Btn_PZ_ToRST_Click"  Margin="584,488,386,74" Height="50" Width="150" Style="{StaticResource ButtonPrimary}" IsEnabled="True" FontSize="22" FontFamily="/ChiyoS.Draw.Komari;component/#iconfont" >
                         <Button.Background>
                             <LinearGradientBrush EndPoint="1,0">
@@ -78,7 +78,7 @@
                         </Button.Background>
                     </Button>
                     <TextBlock x:Name="Tbk_PZ_bgif" Margin="726,569,0,10"  Text="菫時" FontStyle="Italic" TextAlignment="Right" Height="33" Width="400" FontSize="26" Foreground="#FF8A7F7F"/>
-                    <CheckBox x:Name="Cbx_isNosquence" Content="开启随机姓名顺序" IsChecked="True" HorizontalAlignment="Left" Margin="615,424,0,0" VerticalAlignment="Top" Foreground="Black"/>
+                    <CheckBox x:Name="Cbx_isNosquence" Content="启用乱序滚动列" IsChecked="True" IsEnabled="{Binding ElementName=Rbtn_RManual,Path=IsChecked,Mode=OneWay}" HorizontalAlignment="Left" Margin="604,406,0,0" VerticalAlignment="Top" Foreground="Black"/>
                 </Grid>
             </TabItem>
             <TabItem Visibility="Collapsed">

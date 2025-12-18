@@ -40,6 +40,8 @@ namespace ChiyoS.Draw.Komari
         int bgid = 0;
         int wshow = 4;
         int dfreq = 0;
+        int startid = 1;
+        int endid = 55;
         int[] dfreqs;
         bool isCanxh = false;
 
@@ -135,11 +137,30 @@ namespace ChiyoS.Draw.Komari
                     }
                     **/
                     Growl.Info("当前载入:" + root.title);
-                    Title = "ChiyoS.Draw.Komari|Version:2.8.0.0|当前载入配置文件:" + root.title;
+                    Title = "ChiyoS.Draw.Komari|Version:2.9|当前载入配置文件:" + root.title;
                 }));
             }));
         }
-
+        private void StartDelay(object sender, ElapsedEventArgs e)
+        {
+            if (stid == 2)
+            {
+                Dispatcher.Invoke(new Action(() =>
+                {
+                    timer_start.Stop();
+                    timer_start.Enabled = false;
+                    Tbk_wel.Text = "Ciallo～(∠·ω< )⌒★";
+                    Tbk_wel2.Visibility = Visibility.Hidden;
+                    Pgb_wel.Visibility = Visibility.Hidden;
+                    Btn_Enter.IsEnabled = true;
+                    Btn_Enter.Visibility = Visibility.Visible;
+                }));
+            }
+            else
+            {
+                stid++;
+            }
+        }
         /// <summary>
         /// 抽签-自动模式
         /// </summary>
@@ -237,13 +258,14 @@ namespace ChiyoS.Draw.Komari
             {
                 Dispatcher.Invoke(() =>
                 {
+                    
                     isCanxh = true;//Unlock
                     Nud_cqrs.IsEnabled = false;
                     BtnG.IsEnabled = false;
                     Nud_interval.IsEnabled = false;
                     Stp_RST_s1.Children.Clear();
                     Btn_RST_Restart.IsEnabled = false;
-                    //Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
+                    Tbk_RST_Count.Text = string.Format("共 {0} 个", Stp_RST_s1.Children.Count);
                     Tbk_RST_Text.Text = "";
 
                     al.Clear();
@@ -251,9 +273,7 @@ namespace ChiyoS.Draw.Komari
                     Btn_RST_cq.Visibility = Visibility.Visible;
                     Btn_RST_cq.IsEnabled = true;
                     Btn_RST_Cancle.IsEnabled = true;
-
-                    
-                    
+    
                     Tbk_RST_Info.Text = string.Format("[手动模式] 本次将抽取{0}位同学，请点击抽取按钮自主抽取！", Nud_cqrs.Value);
                     if (Rbtn_GDMZ.IsChecked==true)
                     {
@@ -265,22 +285,27 @@ namespace ChiyoS.Draw.Komari
                             {
                                 ArrayList tmp_arl = new ArrayList();
                                 tmp_arl = Getname(randomF2.GenerateUniqueRandom(1, root.students.Count, root.students.Count), 0);
-                                seletlist = tmp_arl;
-                                Showflowtext("随机顺序已开启");
+                                seletlist = tmp_arl;         
+                                Showflowtext("乱序滚动列已启用");
                             }
                             else
                             {
                                 seletlist = Everyone;
                             }
-                            
+                            startid = (int)Nud_stid.Value;
+                            endid = (int)Nud_endid.Value;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 1)
                         {
                             seletlist = boys;
+                            startid = 1;
+                            endid = boys.Count;
                         }
                         else if (Cbx_cqgt.SelectedIndex == 2)
                         {
                             seletlist = girls;
+                            startid = 1;
+                            endid = girls.Count;
                         }
                         timer_xh.Enabled = true;
                         timer_xh.Interval = Nud_interval.Value;
@@ -288,6 +313,7 @@ namespace ChiyoS.Draw.Komari
                     }
                     else
                     {
+                        
                         xhn = 1;
                         gt = 0;                
                         timer1.Enabled = true;
@@ -317,14 +343,14 @@ namespace ChiyoS.Draw.Komari
             Dispatcher.Invoke(new Action(() =>
             {
                 isCanxh = false;
-                if (xhn2 <= (int)Nud_endid.Value)
+                if (xhn2 <= endid)
                 {
                     Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
                     xhn2++;
                 }
                 else
                 {
-                    xhn2 = (int)Nud_stid.Value;
+                    xhn2 = startid;
                     Tbk_RST_Text.Text = seletlist[xhn2-1].ToString();
                 }
                 isCanxh = true;
@@ -332,26 +358,7 @@ namespace ChiyoS.Draw.Komari
         }
 
 
-        private void StartDelay(object sender, ElapsedEventArgs e)
-        {
-            if (stid == 2)
-            {
-                Dispatcher.Invoke(new Action(() =>
-                {
-                    timer_start.Stop();
-                    timer_start.Enabled = false;
-                    Tbk_wel.Text = "Ciallo～(∠·ω< )⌒★";
-                    Tbk_wel2.Visibility = Visibility.Hidden;
-                    Pgb_wel.Visibility = Visibility.Hidden;
-                    Btn_Enter.IsEnabled = true;
-                    Btn_Enter.Visibility = Visibility.Visible;
-                }));
-            }
-            else
-            {
-                stid++;
-            }
-        }
+        
             private void XHNum(object sender, ElapsedEventArgs e)
         {
             if (isCanxh == false)
@@ -376,7 +383,7 @@ namespace ChiyoS.Draw.Komari
 
         }
         /// <summary>
-        /// 展示被抽中的同学
+        /// 呈现被抽中的同学
         /// </summary>
         /// <param name="arr">学号列表</param>
         /// <param name="mode">模式</param>
@@ -388,11 +395,8 @@ namespace ChiyoS.Draw.Komari
                 {
                     for (int i = 0; i < arr.Length; i++)
                     {
-                        //string num = (i + 1).ToString();
-
                         if (root.students[arr[i] - 1].s == "b")
                         {
-
                             Stp_RST_s1.Children.Add(new UserControl2(arr[i].ToString(), root.students[arr[i] - 1].name, (Stp_RST_s1.Children.Count + 1).ToString()));
                         }
                         else
@@ -541,6 +545,14 @@ namespace ChiyoS.Draw.Komari
             }
             else if (Rbtn_RManual.IsChecked == true)
             {
+                if (Rbtn_GDXH.IsChecked == true) 
+                { 
+                    if (Cbx_cqgt_all.IsSelected != true) 
+                    { 
+                        Growl.Warning("滚动学号模式下只能抽取全部个体！"); 
+                        return; 
+                    }
+                }
                 isCanxh = true;
                 if (Cbx_isNosquence.IsChecked == false && Cbx_DynamicFrequency.IsChecked == false)
                 {
@@ -625,13 +637,8 @@ namespace ChiyoS.Draw.Komari
             {
                 Rbtn_RManual.IsChecked = true;
             }
-            else
-            {
-                Nud_interval.IsEnabled = false;
-                BtnG_2.IsEnabled = false;
-                Cbx_sf.IsEnabled = true;
-            }
-        }
+            
+        }/**
         /// <summary>
         /// 按钮组选择 手动模式 的事件
         /// </summary>
@@ -646,7 +653,9 @@ namespace ChiyoS.Draw.Komari
             Nud_interval.IsEnabled = true;
             Cbx_sf.IsEnabled = false;
         }
+        **/
 
+        /**
         private void Cbx_cqgt_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (IsLoaded == false)
@@ -678,7 +687,7 @@ namespace ChiyoS.Draw.Komari
                 Rbtn_GDMZ.IsChecked = true;
             }
         }
-
+        **/
         
         private void Showwarn(object sender, ElapsedEventArgs e)
         {
@@ -699,8 +708,7 @@ namespace ChiyoS.Draw.Komari
                             Showflowtext("动态频率已开启");
                         }
                         timer_showwarn.Stop();
-                        Tbcl.SelectedIndex = 3;
-                        
+                        Tbcl.SelectedIndex = 3;   
                     }
                     
                 }));
@@ -790,8 +798,7 @@ namespace ChiyoS.Draw.Komari
                     timer1.Interval = dfreqs[dfreq];
                 }
                 dfreq++;
-            }
-            
+            }    
         }
 
         private ArrayList Getname(int[] nm, int tid)
